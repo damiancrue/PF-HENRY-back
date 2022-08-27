@@ -14,31 +14,6 @@ const { DataTypes } = require("sequelize");
 //   display_id int [ref: <> cine.displays.description] <--- lo vemos en las relaciones
 // }
 
-const genre = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "History",
-  "Horror",
-  "Music",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Sport",
-  "Thriller",
-  "War",
-  "Western",
-];
-
-const display = ["2D", "3D", "4DX", "IMAX"];
-
 module.exports = (sequelize) => {
   sequelize.define("Movie", {
     movie_id: {
@@ -68,10 +43,10 @@ module.exports = (sequelize) => {
       },
     },
     genre: {
-      type: DataTypes.ARRAY(DataTypes.ENUM(genre)),
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
     display: {
-      type: DataTypes.ARRAY(DataTypes.ENUM(display)),
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
     duration: {
       type: DataTypes.INTEGER,

@@ -1,0 +1,13 @@
+{
+      "title":"THOR LOVE AND THUNDER",
+      "description":"The film finds Thor (Chris Hemsworth) on a journey unlike any he's ever taken before, a search for inner peace. But his retreat is interrupted by a galactic assassin known as Gorr, the Butcher of the Gods (Christian Bale), who seeks the extinction of the gods. To combat the threat, Thor enlists the help of Rey Valkyrie (Tessa Thompson), Korg (Taika Waititi), and his ex-girlfriend Jane Foster (Natalie Portman), who, to Thor's surprise, inexplicably wields her magical hammer Mjolnir like Mighty Thor. . Together they embark on a cosmic adventure to uncover the mystery of the Butcher of the Gods' revenge and to stop him before it's too late.",
+      "poster":"https://static.cinemarkhoyts.com.ar/Images/Posters/914da0f1922c6952b94e4f33a808f551.jpg?v=00000507",
+      "teaser":"https://youtu.be/Gvw7qXDJ8T0",
+      "genre":["Adventure", "Sci-Fi"],
+      "display":["2D", "3D", "4D"],
+      "duration":125,
+      "classification":"PG13",
+      "cast":["Chris Hemsworth", "Chris Pratt", "Christian Bale", "Natalie Portman"],
+      "director":"Taika Waititi",
+      "language":"english"
+}
