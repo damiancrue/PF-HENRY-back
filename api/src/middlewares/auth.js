@@ -17,6 +17,10 @@ const checkActiveUser = async (req, res, next) => {
 };
 
 //Revisa q el UID del usuario es valido
+//Responde en el caso de q la sesion no este activa (no llega a revisar el usuario)
+//Responde en el caso de q el usuario sea invalido
+//Captura y responde ante errores de ejecucion
+//Si todo esta ok, next(); y sigue a la ruta
 const checkValidUser = async (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   try {
@@ -27,11 +31,11 @@ const checkValidUser = async (req, res, next) => {
       if (user) {
         req.body.uid = uid;
         return next();
+      } else {
+        res.status(401).send({ message: "Invalid user" });
       }
     }
-    return res
-      .status(401)
-      .send({ message: "Invalid user or session no longer active" });
+    return res.status(401).send({ message: "Session no longer active" });
   } catch (err) {
     return res.status(500).send({ message: "Internal server error" });
   }
