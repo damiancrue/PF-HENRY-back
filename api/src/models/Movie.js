@@ -23,6 +23,7 @@ module.exports = (sequelize) => {
     },
     title: {
       type: DataTypes.STRING,
+      unique:true,
       allowNull: false, // Se eliminaron las lineas de allowNull: true porque es el valor por defecto
     },
     description: {
@@ -69,5 +70,9 @@ module.exports = (sequelize) => {
     language: {
       type: DataTypes.STRING,
     },
+    comingSoon: {
+      type: DataTypes.BOOLEAN,
+      default: true,
+    }
   });
 };
