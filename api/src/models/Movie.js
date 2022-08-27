@@ -72,7 +72,7 @@ module.exports = (sequelize) => {
     },
     comingSoon: {
       type: DataTypes.BOOLEAN,
-      default: true,
+      defaultValue: true,
     }
   });
 };
