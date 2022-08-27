@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { Op } = require("sequelize");
 const { Movie, Rating } = require("../db.js");
+//const {getMovies} = require("../controllers.js")
 const router = Router();
 
 router.get("/", async (req, res, next) => {
@@ -19,7 +20,6 @@ router.get("/", async (req, res, next) => {
           as: "ratings",
         },
       });
-
       if (movies.length > 0) {
         res.json(movies);
       } else {
@@ -45,7 +45,10 @@ router.get("/:id", async (req, res, next) => {
     const movie = await Movie.findByPk(id, {
       include: {
         model: Rating,
-        as: "ratings",
+        throught: {
+          attributes: ['rate','review'],
+      },
+        //as: "ratings",
       } 
     });
     if (movie) {
