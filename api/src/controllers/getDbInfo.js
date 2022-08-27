@@ -1,4 +1,4 @@
-const {Breed, Temperament} = require('../db');
+const { Breed, Temperament } = require('../db');
 
 const getDbInfo = async () => {
     return await Breed.findAll({
@@ -15,3 +15,4 @@ const getDbInfo = async () => {
 module.exports = {
     getDbInfo,
 }
+

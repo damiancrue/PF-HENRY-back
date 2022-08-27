@@ -10,6 +10,8 @@ require("./db.js");
 
 const server = express();
 
+//! Probando el merge ---------
+
 server.name = "API";
 server.set("port", process.env.PORT || 3001);
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
