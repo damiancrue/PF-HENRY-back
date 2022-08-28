@@ -200,5 +200,4 @@ const sala200 = {
   J19: true,
   J20: true,
 };
-
-export { sala200 };
+module.exports = { sala200 };
