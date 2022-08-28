@@ -48,16 +48,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
     const { name, price, stock } = req.body;
-
+    !stock?cant=0:cant=parseInt(stock)
     const product = await Product.create({
       name,
-      price: parseInt(price),
-      stock: parseFloat(stock),
+      price:parseFloat(price),
+      stock: cant
     });
     res.json(product);
   } catch (e) {
@@ -73,11 +73,13 @@ router.put("/update/:id", async (req, res, next) => {
   try {
     const { name, price, stock } = req.body;
     const product = await Product.findByPk(id);
+
+
     if (product) {
       await product.update({
         name,
-        price: parseInt(price),
-        stock: parseFloat(stock),
+        price,
+        stock,
       });
       res.json(product);
     } else {

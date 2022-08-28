@@ -1,3 +1,7 @@
+
+OBJETOS
+
+MOVIE EXAMPLE
 {
       "title":"THOR LOVE AND THUNDER",
       "description":"The film finds Thor (Chris Hemsworth) on a journey unlike any he's ever taken before, a search for inner peace. But his retreat is interrupted by a galactic assassin known as Gorr, the Butcher of the Gods (Christian Bale), who seeks the extinction of the gods. To combat the threat, Thor enlists the help of Rey Valkyrie (Tessa Thompson), Korg (Taika Waititi), and his ex-girlfriend Jane Foster (Natalie Portman), who, to Thor's surprise, inexplicably wields her magical hammer Mjolnir like Mighty Thor. . Together they embark on a cosmic adventure to uncover the mystery of the Butcher of the Gods' revenge and to stop him before it's too late.",
@@ -13,3 +17,54 @@
       "comingSoon":false
       "rating":[]
 }
+PRODUCT EXAMPLE
+{
+  "name": "Pochoclo Small",
+  "price": 7,
+  "stock": 10,
+}
+RATING EXAMPLE
+{
+  "rating_id": 8,
+  "movie_id": 7,
+  "user_id": 6,
+  "rate": 4,
+  "review": "la mejor pelicula de la década",
+}
+
+
+-------------------------------------------------------------------------------
+
+ARRAYS
+
+DISPLAYS EXAMPLE
+[
+  "2D",
+  "3D",
+  "4DX",
+  "IMAX"
+]
+GENRES EXAMPLE
+[
+  "Action",
+  "Adventure",
+  "Animation",
+  "Anime",
+  "Biography",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Family",
+  "Fantasy",
+  "History",
+  "Horror",
+  "Music",
+  "Mystery",
+  "Romance",
+  "Sci-Fi",
+  "Sport",
+  "Thriller",
+  "War",
+  "Western"
+]
