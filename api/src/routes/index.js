@@ -17,10 +17,12 @@ const MovieRouter = require("./movie.js");
 const RatingRouter = require("./rating.js");
 const ProductRouter = require("./product.js");
 const GenreRouter = require("./genre.js");
+const RoomRouter = require('./room.js')
+router.use("/genres", GenreRouter);
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
 router.use("/products", ProductRouter);
-router.use("/genres", GenreRouter);
+router.use("/rooms", RoomRouter);
 
 
 
