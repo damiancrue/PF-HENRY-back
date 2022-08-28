@@ -46,7 +46,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {

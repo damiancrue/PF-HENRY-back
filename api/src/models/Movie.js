@@ -51,9 +51,6 @@ module.exports = (sequelize) => {
     },
     duration: {
       type: DataTypes.INTEGER,
-      validate: {
-        isInt: true,
-      },
     },
     classification: {
       type: DataTypes.STRING,
@@ -72,7 +69,7 @@ module.exports = (sequelize) => {
     },
     comingSoon: {
       type: DataTypes.BOOLEAN,
-      default: true,
+      defaultValue: true,
     }
   });
 };
