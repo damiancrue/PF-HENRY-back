@@ -1,14 +1,18 @@
 
 API = "http://api-pf-cine.herokuapp.com/"
 
+----------------------------------------------------------
+
 movies/ CHECKED
 get  <-- todas las movies
-post <-- agregar peli  <--- se va a pasar a la ruta /create
+
+movies/create/
+post <-- agregar peli  
 
 movies/:id CHECKED
 get <-- peli por ID
 
-movies/update/:id CHECKED necesita mergear
+movies/update/:id CHECKED 
 put <-- modificar peli
 
 movies/delete/:id CHEKED
@@ -17,5 +21,53 @@ delete <-- borrar peli
 movies?name=query CHECKED
 get <-- consultar peli por name 
 
+----------------------------------------------------------
 
-genres/ unCHECKED
+genres/ CHECKED
+get <-- solo trae array de generos, van para que hagan filtros y para que usen en la creacion de pelis
+
+----------------------------------------------------------
+
+display/ CHECKED
+get <-- solo trae array de formato de proyeccion, van para que hagan filtros y para que usen en la creacion de pelis
+
+-----------------------------------------------------------
+
+products/ CHECKED
+get  <-- todas las movies
+
+products/create CHECKED
+post <-- agregar producto
+
+products/:id CHECKED
+get <-- producto por ID
+
+products/update/:id CHECKED 
+put <-- modificar producto
+
+products/delete/:id CHECKED
+delete <-- borrar producto
+
+products?name=query CHECKED 
+get <-- consultar producto por name 
+
+----------------------------------------------
+
+ratings/ CHECKED
+get  <-- todas las reviews
+
+ratings/create CHECKED
+post <-- agregar calificacion y comentario
+
+ratings/update/:id CHECKED 
+put <-- modificar calificacion y comentario
+
+ratings/delete/:id CHECKED
+delete <-- borrar calificacion y comentario
+
+--------------------------------------------
+
+rooms/:display CHECKED
+get <-- trae objeto de peliculas proyectadas en el formato consultado (3d, 2d etc)
+
+--------------------------------------------

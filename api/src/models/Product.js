@@ -20,15 +20,10 @@ module.exports = (sequelize) => {
     },
     stock: {
       type: DataTypes.INTEGER,
-      validate: {
-        isInt: true,
-      },
+      defaulValue:0,
     },
     price: {
-      type: DataTypes.FLOAT,
-      validate: {
-        isFloat: true,
-      },
+      type: DataTypes.FLOAT(2),
     },
   });
 };
