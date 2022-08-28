@@ -51,9 +51,6 @@ module.exports = (sequelize) => {
     },
     duration: {
       type: DataTypes.INTEGER,
-      validate: {
-        isInt: true,
-      },
     },
     classification: {
       type: DataTypes.STRING,

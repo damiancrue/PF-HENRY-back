@@ -1,0 +1,21 @@
+
+API = "http://api-pf-cine.herokuapp.com/"
+
+movies/ CHECKED
+get  <-- todas las movies
+post <-- agregar peli  <--- se va a pasar a la ruta /create
+
+movies/:id CHECKED
+get <-- peli por ID
+
+movies/update/:id CHECKED necesita mergear
+put <-- modificar peli
+
+movies/delete/:id CHEKED
+delete <-- borrar peli
+
+movies?name=query CHECKED
+get <-- consultar peli por name 
+
+
+genres/ unCHECKED
