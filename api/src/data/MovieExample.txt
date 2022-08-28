@@ -10,4 +10,6 @@
       "cast":["Chris Hemsworth", "Chris Pratt", "Christian Bale", "Natalie Portman"],
       "director":"Taika Waititi",
       "language":"english"
+      "comingSoon":false
+      "rating":[]
 }
