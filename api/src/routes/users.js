@@ -3,7 +3,11 @@ const { User, Role, Op } = require("../db.js");
 const userHelper = require("../helpers/userHelper.js");
 const axios = require("axios");
 require("dotenv").config();
-const { checkActiveUser, checkValidUser } = require("../middlewares/auth.js");
+const {
+  checkActiveUser,
+  checkValidUser,
+  getUID,
+} = require("../middlewares/auth.js");
 
 const users = Router();
 
@@ -22,7 +26,14 @@ const users = Router();
 //   }
 // });
 
-users.put("/deleteUser", async (req, res) => {});
+// users.put("/deleteUser/:email", async (req, res) => {
+//   const {email} = req.params;
+//   try{
+//     const uid = User.findOne({
+
+//     })
+//   }
+// });
 
 users.get("/getUser", checkValidUser, async (req, res) => {
   const { uid } = req.body;
@@ -35,17 +46,17 @@ users.get("/getUser", checkValidUser, async (req, res) => {
 });
 
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
-users.post("/createBasicUser", checkValidUser, async (req, res) => {
-  const { email, name, role, uid } = req.body;
-  if (!email || !name || email === "" || name === "")
+users.post("/createUser", getUID, async (req, res) => {
+  const { email, username, role, uid } = req.body;
+  if (!email || !username || email === "" || username === "")
     res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",
     });
 
   try {
     await User.create({
-      user_id: user_id,
-      name: name,
+      user_id: uid,
+      name: username,
       email: email,
       role_id: role,
     });

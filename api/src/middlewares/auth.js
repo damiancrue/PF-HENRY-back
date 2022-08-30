@@ -60,4 +60,4 @@ const getUID = async (req, res, next) => {
   }
 };
 
-module.exports = { checkActiveUser, checkValidUser };
+module.exports = { checkActiveUser, checkValidUser, getUID };
