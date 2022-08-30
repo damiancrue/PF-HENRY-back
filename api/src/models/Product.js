@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
     },
     stock: {
       type: DataTypes.INTEGER,
-      defaulValue:0,
+      defaulValue: 0,
     },
     price: {
       type: DataTypes.FLOAT(2),
@@ -28,9 +28,9 @@ module.exports = (sequelize) => {
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    }
-    image:{
-      type:DataTypes.STRING
-    } 
+    },
+    image: {
+      type: DataTypes.STRING,
+    },
   });
 };
