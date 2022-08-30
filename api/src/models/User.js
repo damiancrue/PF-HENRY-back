@@ -26,8 +26,12 @@ module.exports = (sequelize) => {
       },
     },
     role_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      default: true,
     },
   });
 };
