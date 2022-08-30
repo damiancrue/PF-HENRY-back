@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
 const users = require("./users.js");
-const { Breed, Temperament } = require("../db");
 require("dotenv").config();
 
 const router = Router();
