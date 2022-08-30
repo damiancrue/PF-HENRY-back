@@ -30,5 +30,9 @@ module.exports = (sequelize) => {
         isFloat: true,
       },
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    }
   });
 };
