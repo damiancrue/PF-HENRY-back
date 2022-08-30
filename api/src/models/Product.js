@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
     price: {
       type: DataTypes.FLOAT(2),
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    }
     image:{
       type:DataTypes.STRING
     } 

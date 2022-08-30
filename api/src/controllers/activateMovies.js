@@ -1,10 +1,10 @@
 const { Movie } = require("../db");
 
-const deleteMovies = async (id) => {
+const activateMovies = async (id) => {
   const movie = await Movie.findByPk(id);
   if (movie) {
     await movie.update({
-      active: false,
+      active: true,
     });
     return true;
   } else {
@@ -13,5 +13,5 @@ const deleteMovies = async (id) => {
 };
 
 module.exports = {
-  deleteMovies,
+    activateMovies,
 };
