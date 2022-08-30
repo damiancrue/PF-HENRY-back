@@ -5,6 +5,7 @@ const { getMoviesById } = require("../controllers/getMoviesById");
 const { deleteMovies } = require("../controllers/deleteMovies");
 const { postMovies } = require("../controllers/postMovies");
 const { putMovies } = require("../controllers/putMovies");
+const { activateMovies } = require("../controllers/activateMovies");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
@@ -76,6 +77,20 @@ router.delete("/delete/:id", async (req, res, next) => {
 
   try {
     const result = await deleteMovies(id);
+    if (result) res.json(result);
+    else {
+      res.send("No matches were found");
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.put("/activate/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const result = await activateMovies(id);
     if (result) res.json(result);
     else {
       res.send("No matches were found");

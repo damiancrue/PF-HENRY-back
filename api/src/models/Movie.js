@@ -70,6 +70,10 @@ module.exports = (sequelize) => {
     comingSoon: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     }
   });
 };
