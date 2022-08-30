@@ -48,6 +48,7 @@ users.get("/getUser", checkValidUser, async (req, res) => {
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
 users.post("/createUser", getUID, async (req, res) => {
   const { email, username, role, uid } = req.body;
+
   if (!email || !username || email === "" || username === "")
     res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",

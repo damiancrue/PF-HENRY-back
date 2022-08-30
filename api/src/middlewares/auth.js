@@ -43,7 +43,7 @@ const checkValidUser = async (req, res, next) => {
 };
 
 const getUID = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.body.token;
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {
