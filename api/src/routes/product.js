@@ -98,7 +98,27 @@ router.delete("/delete/:id", async (req, res, next) => {
   try {
     const product = await Product.findByPk(id);
     if (product) {
-      await product.destroy();
+      await product.update({
+        active: false,
+      });
+      res.json(product);
+    } else {
+      res.send("Product not found");
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.put("/activate/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findByPk(id);
+    if (product) {
+      await product.update({
+        active: true,
+      });
       res.json(product);
     } else {
       res.send("Product not found");
