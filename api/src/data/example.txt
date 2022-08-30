@@ -22,6 +22,7 @@ PRODUCT EXAMPLE
   "name": "Pochoclo Small",
   "price": 7,
   "stock": 10,
+  "image":"http://imagen.jpg"
 }
 RATING EXAMPLE
 {
