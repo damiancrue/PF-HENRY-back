@@ -7,10 +7,22 @@ const { checkActiveUser, checkValidUser } = require("../middlewares/auth.js");
 
 const users = Router();
 
-users.get("/test", async (req, res) => {
-  const roles = await Role.findAll();
-  res.status(200).send(roles);
-});
+// users.post("/test", async (req, res) => {
+//   const { uid, email, name, role } = req.body;
+//   try {
+//     const newUser = await User.create({
+//       user_id: uid,
+//       name: name,
+//       email: email,
+//       role_id: role,
+//     });
+//     res.status(201).send(newUser);
+//   } catch (err) {
+//     res.status(404).send({ message: err });
+//   }
+// });
+
+users.put("/deleteUser", async (req, res) => {});
 
 users.get("/getUser", checkValidUser, async (req, res) => {
   const { uid } = req.body;
@@ -23,11 +35,8 @@ users.get("/getUser", checkValidUser, async (req, res) => {
 });
 
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
-users.post("/createBasicUser", async (req, res) => {
-  const { email, name, user_id } = req.body;
-  console.log(email);
-  console.log(name);
-  console.log("llego");
+users.post("/createBasicUser", checkValidUser, async (req, res) => {
+  const { email, name, role, uid } = req.body;
   if (!email || !name || email === "" || name === "")
     res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",
@@ -38,7 +47,7 @@ users.post("/createBasicUser", async (req, res) => {
       user_id: user_id,
       name: name,
       email: email,
-      role_id: 1, //userHelper.getRoleID("Customer"),
+      role_id: role,
     });
     res.status(201).send({ message: "User created" });
   } catch (err) {
