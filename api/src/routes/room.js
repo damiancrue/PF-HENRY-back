@@ -8,7 +8,7 @@ router.get('/:displayMovie', async (req, res, next) => {
       const { displayMovie } = req.params
       const arrMovies = []
       getRooms.forEach(element => {
-         if (element.display.includes(displayMovie)) {
+         if (element.display.includes(displayMovie.toUpperCase())) {
             arrMovies.push(element)
          }
       });
