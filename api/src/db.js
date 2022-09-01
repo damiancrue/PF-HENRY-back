@@ -37,52 +37,64 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
+//Se comentan las tablas que no se usan mas
 const {
   User,
   Movie,
-  Detail,
-  Display,
-  Genre,
+  //Detail,
+  //Display,
+  //Genre,
   Product,
   Purchase,
-  PurchaseStatus,
+  ProductDetail,
+  ScheduleDetail,
+  //PurchaseStatus,
   Rating,
   Room,
   Schedule,
-  BoughtSeats,
-  Role,
+  //BoughtSeats,
+  //Role,
 } = sequelize.models;
 
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
+//Relaciones nuevas
+User.hasMany(Rating, { foreignKey: "user_id" });
+User.hasMany(Purchase, { foreignKey: "user_id" });
+Movie.hasMany(Rating, { foreignKey: "movie_id" });
+Movie.hasMany(Schedule, { foreignKey: "movie_id" });
+Purchase.hasMany(ProductDetail, { foreignKey: "purchase_id" });
+Purchase.hasMany(ScheduleDetail, { foreignKey: "purchase_id" });
+Product.hasMany(ProductDetail, { foreignKey: "product_id" });
+Schedule.hasMany(ScheduleDetail, { foreignKey: "schedule_id" });
+Room.hasMany(Schedule, { foreignKey: "room_id" });
 
-Rating.hasOne(Movie);
-Rating.hasOne(User);
-User.hasMany(Rating);
-User.hasOne(Role);
-Movie.hasMany(Rating);
-PurchaseStatus.hasMany(Purchase);
-Purchase.hasOne(PurchaseStatus);
-User.hasMany(Purchase);
-Purchase.hasOne(User);
-Purchase.hasMany(Detail);
-Detail.hasOne(Purchase);
-Detail.belongsToMany(Product, { through: "DetailProduct" });
-Product.belongsToMany(Detail, { through: "DetailProduct" });
-Movie.belongsToMany(Genre, { through: "MovieGenre" });
-Genre.belongsToMany(Movie, { through: "MovieGenre" });
-Movie.belongsToMany(Display, { through: "MovieDisplay" });
-Display.belongsToMany(Movie, { through: "MovieDisplay" });
-Room.hasOne(Display);
-Display.hasMany(Room);
-Schedule.hasOne(Room);
-Schedule.hasOne(Movie);
-Schedule.hasOne(Display); // para mi ya la trae la room //
-Room.hasMany(Schedule);
-Movie.hasMany(Schedule);
-Display.hasMany(Schedule); // para mi ya estan relacionados por medio de la room//
-BoughtSeats.hasOne(Purchase); // Relación 1:1 con purchase porque una selección de butacas es una compra y una compra solo puede tener una selección de butacas
-Purchase.hasOne(BoughtSeats);
+//Relaciones viejas
+// Rating.hasOne(Movie);
+// Rating.hasOne(User);
+// User.hasMany(Rating);
+// User.hasOne(Role);
+// Movie.hasMany(Rating);
+// PurchaseStatus.hasMany(Purchase);
+// Purchase.hasOne(PurchaseStatus);
+// User.hasMany(Purchase);
+// Purchase.hasOne(User);
+// Purchase.hasMany(Detail);
+// Detail.hasOne(Purchase);
+// Detail.belongsToMany(Product, { through: "DetailProduct" });
+// Product.belongsToMany(Detail, { through: "DetailProduct" });
+// Movie.belongsToMany(Genre, { through: "MovieGenre" });
+// Genre.belongsToMany(Movie, { through: "MovieGenre" });
+// Movie.belongsToMany(Display, { through: "MovieDisplay" });
+// Display.belongsToMany(Movie, { through: "MovieDisplay" });
+// Room.hasOne(Display);
+// Display.hasMany(Room);
+// Schedule.hasOne(Room);
+// Schedule.hasOne(Movie);
+// Schedule.hasOne(Display); // para mi ya la trae la room //
+// Room.hasMany(Schedule);
+// Movie.hasMany(Schedule);
+// Display.hasMany(Schedule); // para mi ya estan relacionados por medio de la room//
+// BoughtSeats.hasOne(Purchase); // Relación 1:1 con purchase porque una selección de butacas es una compra y una compra solo puede tener una selección de butacas
+// Purchase.hasOne(BoughtSeats);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

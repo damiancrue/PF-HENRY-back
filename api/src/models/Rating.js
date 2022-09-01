@@ -15,13 +15,13 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    movie_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-    },
+    // movie_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // user_id: {
+    //   type: DataTypes.INTEGER,
+    // },
     rate: {
       type: DataTypes.INTEGER,
       validate: {
