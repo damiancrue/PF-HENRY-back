@@ -17,17 +17,17 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    date_time: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      // validate: {      // verificar como funciona este validador.
-      //   isDate: true,
-      // }
-    },
+    // user_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // date_time: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    //   // validate: {      // verificar como funciona este validador.
+    //   //   isDate: true,
+    //   // }
+    // },
     amount: {
       type: DataTypes.FLOAT,
       allowNull: false,

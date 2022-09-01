@@ -19,18 +19,18 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    seats_amount: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        isInt: true,
-      },
-    },
+    // seats_amount: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   validate: {
+    //     isInt: true,
+    //   },
+    // },
     room_seats: {
       type: DataTypes.JSON,
       allowNull: false,
     },
-    display_id: {
+    display_type: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

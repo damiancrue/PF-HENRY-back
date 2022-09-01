@@ -29,14 +29,14 @@ module.exports = (sequelize) => {
       type: DataTypes.TIME,
       allowNull: false,
     },
-    room_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    movie_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    // room_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // movie_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
