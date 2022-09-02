@@ -65,7 +65,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     language: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
     comingSoon: {
       type: DataTypes.BOOLEAN,
