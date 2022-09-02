@@ -1,8 +1,30 @@
 const { Router } = require('express');
 const { getRoom } = require('../controllers/getRoom');
+const { getRoomByName } = require('../controllers/getRoomByName');
 const { postRoom } = require('../controllers/postRoom');
-const { putMovies } = require('../controllers/putMovies');
+const { putRooms } = require('../controllers/putRoom');
 const router = Router();
+
+router.get('/', async (req, res, next) => {
+   const { name } = req.query;
+   if (name) {
+      try {
+         const rooms = await getRoomByName(name);
+         if (rooms.length > 0) return res.send(rooms);
+         else return res.send("Room not found")
+      } catch (error) {
+         next(error)
+      }
+   } else {
+      try {
+         const rooms = await getRoom();
+         return res.json(rooms)
+      } catch (error) {
+         next(error)
+      }
+   }
+
+})
 
 router.get('/:displayMovie', async (req, res, next) => {
    try {
@@ -34,7 +56,7 @@ router.put('/update/:id', async (req, res, next) => {
    const { id } = req.params;
    if (!req.body) return res.send("The form is empty");
    try {
-      const room = await putMovies(id, req.body);
+      const room = await putRooms(id, req.body);
       if (room) return res.send(room)
       else return res.send("No matches were found")
    } catch (error) {
