@@ -8,6 +8,7 @@ const {
   checkValidUser,
   getUID,
 } = require("../middlewares/auth.js");
+const e = require("express");
 
 const users = Router();
 
@@ -37,7 +38,7 @@ users.get("/isLogged", checkActiveUser, async (req, res) => {
   res.status(200).send({ message: "User is logged" });
 });
 
-//Setea el flag de "active" en false
+//Setea el flag de active en false
 users.put(
   "/banUser",
   //getUID,  Se comenta para probar insertar datos falsos que no se pueden validar en firebase
@@ -59,6 +60,23 @@ users.put(
     }
   }
 );
+
+//Setea el flag de active en true
+users.put("/unbanUser", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const userExists = await userHelper.getUserID(email);
+    if (userExists) {
+      await User.update({ active: true }, { where: { email: email } });
+      res.status(200).send();
+    } else {
+      res.status(404).send({ message: "Specified user does not exists" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: e.message });
+  }
+});
 
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
 users.post(
