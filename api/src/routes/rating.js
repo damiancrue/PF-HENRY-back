@@ -10,9 +10,7 @@ router.get("/", async (req, res, next) => {
       const rating = await Rating.findByPk(id, {
         include: {
             model: Movie,
-            trough: {
-                attributes: ["movie_id"],
-            }
+            as: "movie",
         }
       });
       if (rating) {

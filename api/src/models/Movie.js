@@ -36,18 +36,6 @@ module.exports = (sequelize) => {
         isUrl: true,
       },
     },
-    image_1: {
-      type: DataTypes.STRING,
-      validate: {
-        isUrl: true,
-      },
-    },
-    image_2: {
-      type: DataTypes.STRING,
-      validate: {
-        isUrl: true,
-      },
-    },
     teaser: {
       type: DataTypes.STRING,
       validate: {

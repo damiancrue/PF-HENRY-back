@@ -1,36 +1,49 @@
 const { Router } = require("express");
 const { Product } = require("../db.js");
+const productHelper = require("../helpers/productHelper.js");
+const { Op } = require("sequelize");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const { name } = req.query;
+  const { name, active } = req.query;
 
-  if (name) {
-    try {
-      const products = await Product.findAll({
-        where: {
-          name: {
-            [Op.iLike]: `%${name}%`,
-          },
-        },
-      });
-
-      if (products.length > 0) {
-        res.json(products);
-      } else {
-        res.send("Product not found");
-      }
-    } catch (e) {
-      next(e);
-    }
-  } else {
-    try {
-      const products = await Product.findAll();
-      res.json(products);
-    } catch (e) {
-      next(e);
-    }
+  try {
+    const products = await Product.findAll(
+      productHelper.getProductsOptionalParameter(name, active, Op)
+    );
+    products.length > 0
+      ? res.status(200).send(products)
+      : res.status(404).send({ message: "No products were find" });
+  } catch (e) {
+    res.status(500).send({ message: e.message });
   }
+
+  // if (name) {
+  //   try {
+  //     const products = await Product.findAll({
+  //       where: {
+  //         name: {
+  //           [Op.iLike]: `%${name}%`,
+  //         },
+  //       },
+  //     });
+
+  //     if (products.length > 0) {
+  //       res.json(products);
+  //     } else {
+  //       res.send("Product not found");
+  //     }
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // } else {
+  //   try {
+  //     const products = await Product.findAll();
+  //     res.json(products);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
 });
 
 router.get("/:id", async (req, res, next) => {
@@ -38,13 +51,15 @@ router.get("/:id", async (req, res, next) => {
 
   try {
     const product = await Product.findByPk(id);
+
     if (product) {
-      res.json(product);
+      res.status(200).send(product);
     } else {
-      res.send("No matches were found");
+      res.status(404).send("No matches were found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: err.message });
+    //next(e);
   }
 });
 
@@ -52,16 +67,16 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { name, description, price, stock, image } = req.body;
-    !stock?cant=0:cant=parseInt(stock)
+    const { name, price, stock, image } = req.body;
+    //!stock ? (cant = 0) : (cant = parseInt(stock));
     const product = await Product.create({
       name,
-      description,
-      price:parseFloat(price),
-      stock: cant,
-      image
+      price: parseFloat(price),
+      stock: !stock ? 0 : parseInt(stock),
+      //stock: cant,
+      image,
     });
-    res.json(product);
+    res.status(201).send(product);
   } catch (e) {
     next(e);
   }
@@ -69,28 +84,26 @@ router.post("/create", async (req, res, next) => {
 
 router.put("/update/:id", async (req, res, next) => {
   const { id } = req.params;
-
-  if (!req.body) res.send("The form is empty");
+  if (!req.body) res.status(400).send("The form is empty");
 
   try {
-    const { name, description, price, stock, image } = req.body;
+    const { name, price, stock, image } = req.body;
     const product = await Product.findByPk(id);
-
 
     if (product) {
       await product.update({
         name,
-        description,
-        price: parseFloat(price),
-        stock: parseInt(stock),
-        image
+        price,
+        stock,
+        image,
       });
-      res.json(product);
+      res.status(200).send(product);
     } else {
-      res.send("Product not found");
+      res.status(404).send("Product not found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
@@ -103,12 +116,13 @@ router.delete("/delete/:id", async (req, res, next) => {
       await product.update({
         active: false,
       });
-      res.json(product);
+      res.status(200).send(product);
     } else {
-      res.send("Product not found");
+      res.status(404).send("Product not found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
@@ -121,12 +135,13 @@ router.put("/activate/:id", async (req, res, next) => {
       await product.update({
         active: true,
       });
-      res.json(product);
+      res.status(200).send(product);
     } else {
-      res.send("Product not found");
+      res.status(404).send("Product not found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
