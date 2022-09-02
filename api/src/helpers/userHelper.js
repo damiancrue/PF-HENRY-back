@@ -1,4 +1,4 @@
-const { Role, Op } = require("../db.js");
+const { Role, User, Op } = require("../db.js");
 
 module.exports = {
   getRoleID: async (roleName) => {
@@ -8,12 +8,20 @@ module.exports = {
     return userRoleObject.role_id;
   },
   getUsersOptionalParameter: (active) => {
-    if (active)
-      return {
-        where: {
-          active: active,
-        },
-      };
+    if (active !== undefined);
+    return {
+      where: {
+        active: active,
+      },
+    };
     return;
+  },
+  getUserID: async (email) => {
+    const userID = await User.findAll({ where: { email: email } });
+    if (userID.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
   },
 };
