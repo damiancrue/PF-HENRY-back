@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
     },
     code: {
       type: DataTypes.CHAR,
-      unique: true, //No puede haber dos roles con el mismo codigo
+      unique: true, //No puede haber dos roles con el mismo código
       allowNull: false,
     },
     name: {

@@ -36,7 +36,7 @@ module.exports = (sequelize) => {
       },
     },
     status_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BOOLEAN,
     },
   });
 };

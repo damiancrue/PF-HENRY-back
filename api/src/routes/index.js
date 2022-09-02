@@ -17,6 +17,7 @@ const RatingRouter = require("./rating.js");
 const ProductRouter = require("./product.js");
 const GenreRouter = require("./genre.js");
 const RoomRouter = require("./room.js");
+const SeatsRouter = require("./seats.js");
 
 const DisplayRouter = require("./display.js");
 router.use("/movies", MovieRouter);
@@ -25,6 +26,7 @@ router.use("/products", ProductRouter);
 router.use("/genres", GenreRouter);
 router.use("/displays", DisplayRouter);
 router.use("/rooms", RoomRouter);
+router.use("/seats", SeatsRouter);
 
 
 
