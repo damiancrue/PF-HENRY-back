@@ -2,6 +2,9 @@ const { Router } = require("express");
 const { getMovies } = require("../controllers/getMovies");
 const { getMoviesByName } = require("../controllers/getMoviesByName");
 const { getMoviesById } = require("../controllers/getMoviesById");
+const {
+  getMoviesByParameter,
+} = require("../controllers/getMoviesByparameter.js");
 const { deleteMovies } = require("../controllers/deleteMovies");
 const { postMovies } = require("../controllers/postMovies");
 const { putMovies } = require("../controllers/putMovies");
@@ -9,27 +12,38 @@ const { activateMovies } = require("../controllers/activateMovies");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const { name } = req.query;
+  const { name, active } = req.query;
 
-  if (name) {
-    try {
-      const movies = await getMoviesByName(name);
-      if (movies.length > 0) {
-        res.json(movies);
-      } else {
-        res.send("Movie not found");
-      }
-    } catch (e) {
-      next(e);
+  try {
+    const movies = await getMoviesByParameter(name, active);
+    if (movies.length > 0) {
+      res.status(200).send(movies);
+    } else {
+      res.status(404).send({ message: "No movies found" });
     }
-  } else {
-    try {
-      const movies = await getMovies();
-      res.json(movies);
-    } catch (e) {
-      next(e);
-    }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
   }
+
+  // if (name) {
+  //   try {
+  //     const movies = await getMoviesByName(name, active);
+  //     if (movies.length > 0) {
+  //       res.json(movies);
+  //     } else {
+  //       res.send("Movie not found");
+  //     }
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // } else {
+  //   try {
+  //     const movies = await getMovies();
+  //     res.json(movies);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
 });
 
 router.get("/:id", async (req, res, next) => {
@@ -38,12 +52,13 @@ router.get("/:id", async (req, res, next) => {
   try {
     const movie = await getMoviesById(id);
     if (movie) {
-      res.json(movie);
+      res.status(200).send(movie);
     } else {
-      res.send("No matches were found");
+      res.status(404).send("No matches were found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
@@ -52,9 +67,10 @@ router.post("/create", async (req, res, next) => {
 
   try {
     const movie = await postMovies(req.body);
-    res.json(movie);
+    res.status(201).send(movie);
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
@@ -65,10 +81,11 @@ router.put("/update/:id", async (req, res, next) => {
 
   try {
     const movie = await putMovies(id, req.body);
-    if (movie) res.json(movie);
-    else res.send("No matches were found");
+    if (movie) res.status(200).send(movie);
+    else res.status(404).send("No matches were found");
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
@@ -77,12 +94,13 @@ router.delete("/delete/:id", async (req, res, next) => {
 
   try {
     const result = await deleteMovies(id);
-    if (result) res.json(result);
+    if (result) res.status(200).send(result);
     else {
-      res.send("No matches were found");
+      res.status(404).send("No matches were found");
     }
   } catch (e) {
-    next(e);
+    res.status({ message: e.message });
+    //next(e);
   }
 });
 
@@ -91,12 +109,13 @@ router.put("/activate/:id", async (req, res, next) => {
 
   try {
     const result = await activateMovies(id);
-    if (result) res.json(result);
+    if (result) res.status(200).send(result);
     else {
-      res.send("No matches were found");
+      res.status(404).send("No matches were found");
     }
   } catch (e) {
-    next(e);
+    res.status(500).send({ message: e.message });
+    //next(e);
   }
 });
 
