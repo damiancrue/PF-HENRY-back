@@ -1,10 +1,13 @@
 const { Router } = require('express');
+const { deleteRoom } = require('../controllers/deleteRoom');
 const { getRoom } = require('../controllers/getRoom');
 const { getRoomByName } = require('../controllers/getRoomByName');
 const { postRoom } = require('../controllers/postRoom');
 const { putRooms } = require('../controllers/putRoom');
 const router = Router();
 
+
+//! Busca alguna room por nombre o todas
 router.get('/', async (req, res, next) => {
    const { name } = req.query;
    if (name) {
@@ -25,7 +28,7 @@ router.get('/', async (req, res, next) => {
    }
 
 })
-
+//! Busca las rooms por tipo de display (2D, 3D, 4D, 5D, 6D...)
 router.get('/:displayMovie', async (req, res, next) => {
    try {
       const getRooms = await getRoom();
@@ -41,7 +44,7 @@ router.get('/:displayMovie', async (req, res, next) => {
       next(error)
    }
 });
-
+//! Crea las rooms (A pesar de tener qué ser un valor estático)
 router.post('/create', async (req, res, next) => {
    if (!req.body) res.send("The form is empty");
    try {
@@ -51,7 +54,7 @@ router.post('/create', async (req, res, next) => {
       next(error);
    }
 });
-
+//! Edita la room
 router.put('/update/:id', async (req, res, next) => {
    const { id } = req.params;
    if (!req.body) return res.send("The form is empty");
@@ -60,6 +63,21 @@ router.put('/update/:id', async (req, res, next) => {
       if (room) return res.send(room)
       else return res.send("No matches were found")
    } catch (error) {
+      next(e);
+   }
+});
+
+//! Adiós room
+router.delete("/delete/:id", async (req, res, next) => {
+   const { id } = req.params;
+
+   try {
+      const result = await deleteRoom(id);
+      if (result) res.json(result);
+      else {
+         res.send("No matches were found");
+      }
+   } catch (e) {
       next(e);
    }
 });
