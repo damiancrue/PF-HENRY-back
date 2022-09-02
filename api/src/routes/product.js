@@ -71,13 +71,14 @@ router.post("/create", async (req, res, next) => {
 
   try {
     const { name, price, stock, image } = req.body;
-    //!stock ? (cant = 0) : (cant = parseInt(stock));
+
+    !stock ? cant = 0 : cant = parseInt(stock)
     const product = await Product.create({
       name,
       price: parseFloat(price),
-      stock: !stock ? 0 : parseInt(stock),
-      //stock: cant,
-      image,
+      stock: cant,
+      image
+
     });
     res.status(201).send(product);
   } catch (e) {
