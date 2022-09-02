@@ -9,8 +9,8 @@ router.get("/", async (req, res, next) => {
     try {
       const rating = await Rating.findByPk(id, {
         include: {
-            model: Movie,
-            as: "movie",
+          model: Movie,
+          as: "movie",
         }
       });
       if (rating) {

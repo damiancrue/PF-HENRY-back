@@ -52,11 +52,11 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { name, price, stock,image } = req.body;
-    !stock?cant=0:cant=parseInt(stock)
+    const { name, price, stock, image } = req.body;
+    !stock ? cant = 0 : cant = parseInt(stock)
     const product = await Product.create({
       name,
-      price:parseFloat(price),
+      price: parseFloat(price),
       stock: cant,
       image
     });
@@ -72,7 +72,7 @@ router.put("/update/:id", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { name, price, stock,image } = req.body;
+    const { name, price, stock, image } = req.body;
     const product = await Product.findByPk(id);
 
 
