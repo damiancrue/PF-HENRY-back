@@ -7,4 +7,13 @@ module.exports = {
     });
     return userRoleObject.role_id;
   },
+  getUsersOptionalParameter: (active) => {
+    if (active)
+      return {
+        where: {
+          active: active,
+        },
+      };
+    return;
+  },
 };
