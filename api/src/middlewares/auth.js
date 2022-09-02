@@ -8,9 +8,7 @@ const checkActiveUser = async (req, res, next) => {
     if (decodedValue) {
       return next();
     }
-    return res
-      .status(401)
-      .send({ message: "Invalid user or session no longer active" });
+    return res.status(410).send({ message: "Session no longer active" });
   } catch (err) {
     return res.status(500).send({ message: "Internal server error" });
   }
