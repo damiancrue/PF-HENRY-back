@@ -1,7 +1,10 @@
 const { Router } = require("express");
 const { Product } = require("../db.js");
 const productHelper = require("../helpers/productHelper.js");
+
+
 const { Op } = require("sequelize");
+
 const router = Router();
 
 router.get("/", async (req, res, next) => {
