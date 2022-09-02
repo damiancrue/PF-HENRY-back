@@ -35,8 +35,8 @@ module.exports = (sequelize) => {
         isFloat: true,
       },
     },
-    status_id: {
-      type: DataTypes.INTEGER,
-    },
+    // status_id: {
+    //   type: DataTypes.INTEGER,
+    // },
   });
 };

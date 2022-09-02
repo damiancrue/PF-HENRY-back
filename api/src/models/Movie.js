@@ -36,6 +36,18 @@ module.exports = (sequelize) => {
         isUrl: true,
       },
     },
+    image_1: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true,
+      },
+    },
+    image_2: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true,
+      },
+    },
     teaser: {
       type: DataTypes.STRING,
       validate: {
@@ -65,7 +77,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     language: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
     comingSoon: {
       type: DataTypes.BOOLEAN,

@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     display_type: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
