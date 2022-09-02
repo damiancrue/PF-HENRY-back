@@ -8,68 +8,101 @@ const {
   checkValidUser,
   getUID,
 } = require("../middlewares/auth.js");
+const e = require("express");
 
 const users = Router();
-
-// users.post("/test", async (req, res) => {
-//   const { uid, email, name, role } = req.body;
-//   try {
-//     const newUser = await User.create({
-//       user_id: uid,
-//       name: name,
-//       email: email,
-//       role_id: role,
-//     });
-//     res.status(201).send(newUser);
-//   } catch (err) {
-//     res.status(404).send({ message: err });
-//   }
-// });
-
-// users.put("/deleteUser/:email", async (req, res) => {
-//   const {email} = req.params;
-//   try{
-//     const uid = User.findOne({
-
-//     })
-//   }
-// });
-
-users.get("/getUser", checkValidUser, async (req, res) => {
-  const { uid } = req.body;
-  try {
-    const user = await User.findByPk(uid);
-    res.status(200).send({ email: user.email, name: user.name });
-  } catch (err) {
-    res.status(400).send({ message: err.message });
-  }
-});
-
-//Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
-users.post("/createUser", getUID, async (req, res) => {
-  const { email, username, role, uid } = req.body;
-
-  if (!email || !username || email === "" || username === "")
-    res.status(400).send({
-      message: "All creation fields must be sent, and they can't be empty",
-    });
-
-  try {
-    await User.create({
-      user_id: uid,
-      name: username,
-      email: email,
-      role_id: role,
-    });
-    res.status(201).send({ message: "User created" });
-  } catch (err) {
-    res.status(400).send({ message: err.message });
-  }
-});
 
 //Valida que el usuario exista, o que la sesion no haya terminado
 users.get("/validateActiveUser", checkActiveUser, (req, res) => {
   res.status(202).send({ message: "Valid user" });
 });
+
+//Busca a todos los usuarios, con la opcion de pasarle
+//el parametro "active"
+users.get("/getAll", async (req, res) => {
+  const { active } = req.query;
+
+  try {
+    const usersResult = await User.findAll(
+      userHelper.getUsersOptionalParameter(active)
+    );
+    res.status(202).send(usersResult);
+  } catch (err) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+
+//Verifica si el usuario esta logueado
+//De no estarlo, el middleware envia la respuesta y no se llega aca
+users.get("/isLogged", checkActiveUser, async (req, res) => {
+  res.status(200).send({ message: "User is logged" });
+});
+
+//Setea el flag de active en false
+users.put(
+  "/banUser",
+  //getUID,  Se comenta para probar insertar datos falsos que no se pueden validar en firebase
+  async (req, res) => {
+    const { uid } = req.body;
+
+    try {
+      User.update(
+        { active: false },
+        {
+          where: {
+            user_id: uid,
+          },
+        }
+      );
+      res.status(200).send({ message: "User is now inactive" });
+    } catch (err) {
+      res.status(400).send({ message: err });
+    }
+  }
+);
+
+//Setea el flag de active en true
+users.put("/unbanUser", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const userExists = await userHelper.getUserID(email);
+    if (userExists) {
+      await User.update({ active: true }, { where: { email: email } });
+      res.status(200).send();
+    } else {
+      res.status(404).send({ message: "Specified user does not exists" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: e.message });
+  }
+});
+
+//Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
+users.post(
+  "/createUser",
+  //getUID,  Se comenta para probar insertar datos falsos que no se pueden validar en firebase
+  async (req, res) => {
+    const { email, username, role, uid } = req.body;
+
+    if (!email || !username || email === "" || username === "")
+      res.status(400).send({
+        message: "All creation fields must be sent, and they can't be empty",
+      });
+
+    try {
+      await User.create({
+        user_id: uid,
+        name: username,
+        email: email,
+        role_id: role,
+        active: true,
+      });
+      res.status(201).send({ message: "User created" });
+    } catch (err) {
+      res.status(400).send({ message: err.message });
+    }
+  }
+);
 
 module.exports = users;
