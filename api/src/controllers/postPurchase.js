@@ -30,12 +30,25 @@ module.exports = {
 };
  */
 
-/* const { Purchase, ProductDetail, User } = require("../db");
+const { Purchase, ProductDetail, User } = require("../db");
 
 const postPurchase = async (data) => {
   const purchase = await Purchase.create({
-    include: User
+    include: [{
+      model: User,
+      attributes: ['user_id'],
+      through: {
+        attributes: []
+      }
+    }],
+    include: [{
+      model: ProductDetail,
+      attributes: ['product_detail_id'],
+      through: {
+        attributes: []
+      }
+    }]
   })
-  console.log(purchase)
+  //console.log('postPurchase: ', purchase)
 }
-module.exports = { postPurchase } */
+module.exports = { postPurchase }

@@ -20,6 +20,7 @@ const DisplayRouter = require("./display.js");
 const LanguageRouter = require("./language.js");
 const SeatRouter = require("./seats.js");
 const RoomRouter = require("./room.js");
+const PurchaseRouter = require("./purchase.js");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
@@ -29,6 +30,7 @@ router.use("/displays", DisplayRouter);
 router.use("/languages", LanguageRouter);
 router.use("/seats", SeatRouter);
 router.use("/rooms", RoomRouter);
+router.use("/purchases", PurchaseRouter);
 
 
 
