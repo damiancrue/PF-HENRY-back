@@ -20,7 +20,7 @@ const LanguageRouter = require("./language.js");
 const SeatRouter = require("./seats.js");
 const RoomRouter = require("./room.js");
 const PurchaseRouter = require("./purchase.js");
-const UserRouter = require("./user.js");
+const UserRouter = require("./users.js");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
