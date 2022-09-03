@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
-const users = require("./users.js");
+
 require("dotenv").config();
 
 const router = Router();
@@ -9,7 +9,6 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 
 //Agrega el enrutado de /users
-router.use("/users", users);
 
 //Esta sería la información para el index.js modularizando las rutas//
 const MovieRouter = require("./movie.js");
@@ -20,6 +19,7 @@ const DisplayRouter = require("./display.js");
 const LanguageRouter = require("./language.js");
 const SeatRouter = require("./seats.js");
 const RoomRouter = require("./room.js");
+const UserRouter = require("./users.js");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
@@ -29,8 +29,6 @@ router.use("/displays", DisplayRouter);
 router.use("/languages", LanguageRouter);
 router.use("/seats", SeatRouter);
 router.use("/rooms", RoomRouter);
-
-
-
+router.use("/users", UserRouter);
 
 module.exports = router;
