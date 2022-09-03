@@ -14,7 +14,7 @@ module.exports = {
         active: active,
       },
     };
-    return;
+    //return;
   },
   getUserID: async (email) => {
     const userID = await User.findAll({ where: { email: email } });
