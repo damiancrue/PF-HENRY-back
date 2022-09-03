@@ -1,4 +1,4 @@
-const { Purchase, ProductDetail, ScheduleDetail } = require("../db");
+/* const { Purchase, ProductDetail, ScheduleDetail } = require("../db");
 
 const postPurchase = async (data) => {
   const {
@@ -28,3 +28,14 @@ const postPurchase = async (data) => {
 module.exports = {
   postPurchase,
 };
+ */
+
+/* const { Purchase, ProductDetail, User } = require("../db");
+
+const postPurchase = async (data) => {
+  const purchase = await Purchase.create({
+    include: User
+  })
+  console.log(purchase)
+}
+module.exports = { postPurchase } */
