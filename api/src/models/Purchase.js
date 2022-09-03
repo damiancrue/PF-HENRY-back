@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
     // },
     amount: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      //allowNull: false,
       validate: {
         isFloat: true,
       },
