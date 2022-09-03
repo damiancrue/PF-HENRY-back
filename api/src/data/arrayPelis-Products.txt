@@ -1,0 +1,599 @@
+[
+    {
+        "movie_id": 11,
+        "title": "MINIONS A VILLAIN IS BORN",
+        "description": "Very soon, from the biggest animated franchise in history and the global phenomenon, comes the story of a 12-year-old teenager who dreams of becoming the biggest villain in the world: MINIONS: A VILLAIN IS BORN.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/19255d54fb0b4ddd40cd16a6be4f40a8.jpg",
+        "teaser": "https://youtu.be/Pqc8zKWGTqs",
+        "genre": [
+            "Animation"
+        ],
+        "display": [
+            "2D",
+            "3D"
+        ],
+        "duration": 87,
+        "classification": "PG",
+        "cast": [],
+        "director": "Brad Ableson, Kyle Balda",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": false,
+        "createdAt": "2022-08-30T12:25:06.189Z",
+        "updatedAt": "2022-08-30T18:01:43.345Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 17,
+        "title": "TOP GUN MAVERICK",
+        "description": "After more than thirty years of service as one of the best aviators in the Navy, Pete 'Maverick' Mitchell (Tom Cruise) is where he belongs, as a brave test pilot and dodging the advancement in rank that would land him. While training a squad of Top Gun graduates for a specialized mission no pilot alive has ever seen, Maverick meets Lt. Bradley Bradshaw (Miles Teller), nicknamed: 'Gallo,' the son of Maverick's late friend and the radar intercept officer, Lieutenant Nick Bradshaw, also known as 'Goose'. Facing an uncertain future and confronting the ghosts of his past, Maverick is drawn into a confrontation with his own deepest fears",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/b62354cdb2a13bbd38f3901446cc817e.jpg",
+        "teaser": "https://youtu.be/Ryn1802z4s8",
+        "genre": [
+            "Action"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "4D",
+            "IMAX"
+        ],
+        "duration": 131,
+        "classification": "PG",
+        "cast": [
+            "Tom Cruise",
+            "Val Kilmer"
+        ],
+        "director": "Joseph Kosinski",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T18:15:59.873Z",
+        "updatedAt": "2022-08-30T18:15:59.873Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 12,
+        "title": "BLADE RUNNER 1982",
+        "description": "VNovember 2019. At the beginning of the 21st century, the powerful Tyrell Corporation created, thanks to advances in genetic engineering, a robot called Nexus 6, a being virtually identical to man but superior to him in strength and agility, which was given the name Replicant. These robots worked as slaves in the outer colonies of Earth. After the bloody rebellion of a Nexus-6 team, the Replicants were banished from Earth. Special police brigades, the Blade Runners, had orders to kill all those who had not obeyed the sentence. But this was not called execution, it was called 'retirement'. After a serious incident, ex-Blade Runner Rick Deckard is called back into service to find and 'remove' rebel replicants.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/a265091ecbfc2d58ffbd73d02b5b27bc.jpg",
+        "teaser": "https://www.youtube.com/OL5dD-EwcaU",
+        "genre": [
+            "Action"
+        ],
+        "display": [
+            "2D",
+            "IMAX"
+        ],
+        "duration": 117,
+        "classification": "PG13",
+        "cast": [
+            "Harrison Ford",
+            "Rutger Hauer"
+        ],
+        "director": "Riddley Scott",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:31:55.228Z",
+        "updatedAt": "2022-08-30T15:28:32.995Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 10,
+        "title": "THE BLACK PHONE",
+        "description": "Finney Shaw, a shy but intelligent 13-year-old boy is kidnapped by a sadistic killer and trapped in a terrifying, dark and isolated basement, where screams are of little use. When a black telephone unplugged on the wall starts ringing, Finney discovers that he can hear the spirits of the killer's previous victims. The spirits on the phone are determined to make sure that what happened to them doesn't happen to Finney.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/ef56bcb3868ac50518c2240284142265.jpg",
+        "teaser": "https://www.youtube.com/VQpTUoa4wok",
+        "genre": [
+            "Horror"
+        ],
+        "display": [
+            "2D",
+            "3D"
+        ],
+        "duration": 104,
+        "classification": "PG16",
+        "cast": [
+            "Ethan Hawke",
+            "Jeremy Davies",
+            "Mason Thames"
+        ],
+        "director": "Scott Derrickson",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:20:56.216Z",
+        "updatedAt": "2022-08-30T15:26:16.408Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 2,
+        "title": "THOR",
+        "description": "After unleashing an ancient war, the greedy warrior Thor is banished to Earth by his father to live among men and discover the true meaning of humility. There, without his powers, Thor must face the darkest forces that his greatest enemy will send him from Asgard.",
+        "poster": "https://www.previewsworld.com/SiteImage/MainImage/STL206012.jpg",
+        "teaser": "https://www.youtube.com/JOddp-nlNvQ",
+        "genre": [
+            "Adventure",
+            "Sci-Fi"
+        ],
+        "display": [
+            "2D",
+            "3D"
+        ],
+        "duration": 118,
+        "classification": "PG13",
+        "cast": [
+            "Chris Hemsworth",
+            "Tom Hiddelston",
+            "Natalie Portman"
+        ],
+        "director": "Kenneth Branagh",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T10:05:07.843Z",
+        "updatedAt": "2022-08-30T15:48:47.704Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 15,
+        "title": "UNEXPECTED MIRACLES",
+        "description": "Set in the south of the United States, in the middle of the Depression. Paul Edgecomb is a prison officer responsible for monitoring the 'Green Mile', a corridor that separates the cells of inmates sentenced to the electric chair. John Coffey, a gigantic black man accused of brutally murdering two nine-year-old sisters, is awaiting his imminent execution. Behind a naive and childlike personality, Coffey hides a prodigious supernatural gift",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/24e7023058634e5f96492867d63fe586.jpg",
+        "teaser": "https://youtu.be/WieEyu5KDbE",
+        "genre": [
+            "Drama"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 189,
+        "classification": "PG16",
+        "cast": [
+            "Michael Clarke Duncan",
+            "Tom Hanks"
+        ],
+        "director": "Frank Darabont",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:42:18.617Z",
+        "updatedAt": "2022-08-30T12:42:18.617Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 13,
+        "title": "AFTER INFINITE LOVE",
+        "description": "The fourth installment of the AFTER franchise finds Tessa and Hardin in a dilemma: Should Tessa keep trying to save him and their relationship, or is it time to save herself? While Hardin stays in London after his mother's wedding and sinks deeper and deeper into his darkness, Tessa returns to Seattle and suffers a tragedy. If they want their love to survive, they will need to work on themselves. But will their paths lead them back to each other?",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/c5ec645ee80686b4154089d681d19a22.jpg",
+        "teaser": "https://youtu.be/PWN9f9aWSQE",
+        "genre": [
+            "Drama"
+        ],
+        "display": [
+            "2D",
+            "IMAX"
+        ],
+        "duration": 119,
+        "classification": "PG13",
+        "cast": [
+            "Hero Fiennes Tiffin",
+            "Josephine Langford"
+        ],
+        "director": "Castille Landon",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:35:08.435Z",
+        "updatedAt": "2022-08-30T12:35:08.435Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 5,
+        "title": "30 NIGHTS WITH MY EX",
+        "description": "El Turbo (Adrián Suar) who, after 3 years of separation from La Loba (Pilar Gamboa), accepts, at the request of the daughter they have in common, to live together for 30 days with his ex-wife, who comes from a long psychiatric hospitalization. La Loba must make the transition between internment and her reintegration into society. The new 'family life' will make El Turbo and La Loba relive the feelings of love and awaken the illusion of being together again. While the mixed feelings between the two resurface, and with the need for emotional containment in the background, coexistence becomes an emotional ups and downs that will make them waver between love and what led to the end of the couple. A perfect storm full of irreverence, incidents with neighbors, sexual outbursts and unconventional public behavior,",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/f287a43c4e716f87925b603d830803a8.jpg",
+        "teaser": "https://youtu.be/Xv1GC3wHwlQ",
+        "genre": [
+            "Comedy"
+        ],
+        "display": [
+            "2D",
+            "IMAX"
+        ],
+        "duration": 95,
+        "classification": "PG13",
+        "cast": [
+            "Adrian Suar",
+            "Pilar Gamboa"
+        ],
+        "director": "Adrian Suar",
+        "writter": null,
+        "language": "spanish",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T10:32:45.028Z",
+        "updatedAt": "2022-08-30T10:32:45.028Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 8,
+        "title": "THE SAMURAI DOG",
+        "description": "THE SAMURAI DOG: THE LEGEND OF KAKAMUCHO. A village of cats is in danger and an unexpected hero appears to help them: a dog named Hank!.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/0e5a0523164d6fd758f0befd9f8e5ebe.jpg",
+        "teaser": "https://youtu.be/ZXx0NcpRwBk",
+        "genre": [
+            "Animation"
+        ],
+        "display": [
+            "2D",
+            "3D"
+        ],
+        "duration": 98,
+        "classification": "PG",
+        "cast": [],
+        "director": "Chris Bailey, Mark Koetsier, Rob Minkoff",
+        "writter": null,
+        "language": "spanish",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:13:56.175Z",
+        "updatedAt": "2022-08-30T12:13:56.175Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 6,
+        "title": "DC LEAGUE OF SUPERMASCOTES",
+        "description": "Krypto the super dog and Superman are inseparable best friends who share the same superpowers and fight crime together in Metropolis. When Superman and the rest of the Justice League are kidnapped, Krypto must convince a gang of animals (Ace the hound, PB the minipig, Merton the turtle and Chip the squirrel) to master their own newfound powers and help rescue him to superheroes.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/b308536a73b38edc6556812fb69c013a.jpg",
+        "teaser": "https://youtu.be/b3ixytGHMaM",
+        "genre": [
+            "Animation"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 160,
+        "classification": "PG",
+        "cast": [],
+        "director": "Jared Stern, Sam Levine",
+        "writter": null,
+        "language": "spanish",
+        "comingSoon": false,
+        "active": false,
+        "createdAt": "2022-08-30T10:41:15.136Z",
+        "updatedAt": "2022-08-30T18:01:42.632Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 16,
+        "title": "THE RINGS OF POWER",
+        "description": "Set thousands of years before the events of JRR Tolkien's The Hobbit and The Lord of the Rings, this epic drama will transport viewers to an era where great powers were forged, kingdoms rose to glory and fell to ruin, unlikely heroes were put to the test, hope hung by the thinnest thread, and the greatest villain to ever flow from Tolkien's pen threatened to cover the entire world in darkness. Beginning in a time of relative peace, the series follows a cast of characters, both familiar and new, as they face the dreaded resurgence of evil in Middle-earth. From the darkest depths of the Cloudy Mountains to the majestic forests of Lindon, the capital of the elves, the stunning island kingdom of Númenor and the farthest reaches of the map",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/bfa98aae8a5ff07677e341f08351aaf5.jpg",
+        "teaser": "https://youtu.be/Z4H3eq6g3M4",
+        "genre": [
+            "Action"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "4D",
+            "IMAX"
+        ],
+        "duration": 130,
+        "classification": "PG13",
+        "cast": [],
+        "director": "Juan Antonio Bayona",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T17:58:05.333Z",
+        "updatedAt": "2022-08-30T17:58:05.333Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 4,
+        "title": "BEAST",
+        "description": "Sometimes the rustler in the bushes is actually a monster. Idris Elba (Fast and Furious: Hobbs & Shaw, The Suicide Squad) stars in a thrilling new thriller about a father and his two teenage daughters who are chased by a huge lion who tries to prove that the jungle has only one top predator. Elba plays Dr. Nate Daniels, a husband who has just been widowed and who returns to South Africa, where he met his wife, on a long-planned trip with his daughters to a hunting area controlled by Martin Battles (Sharlto Copley, Russian Doll series, Maleficent) , an old family friend and wildlife biologist. But what begins as a journey of healing turns into a terrifying struggle for survival a lion.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/7733b3928104c35603738f47894e0bbf.jpg",
+        "teaser": "https://youtu.be/Xv1GC3wHwlQ",
+        "genre": [
+            "Thriller"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 13,
+        "classification": "PG16",
+        "cast": [
+            "Idris Elba",
+            "Iyana Halley",
+            "Leah Jeffries",
+            "Sharlto Copley"
+        ],
+        "director": "Baltasar Kormakur",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T10:29:11.713Z",
+        "updatedAt": "2022-08-30T10:29:11.713Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 1,
+        "title": "THOR LOVE AND THUNDER",
+        "description": "The film finds Thor (Chris Hemsworth) on a journey unlike any he's ever taken before, a search for inner peace. But his retreat is interrupted by a galactic assassin known as Gorr, the Butcher of the Gods (Christian Bale), who seeks the extinction of the gods. To combat the threat, Thor enlists the help of Rey Valkyrie (Tessa Thompson), Korg (Taika Waititi), and his ex-girlfriend Jane Foster (Natalie Portman), who, to Thor's surprise, inexplicably wields her magical hammer Mjolnir like Mighty Thor. . Together they embark on a cosmic adventure to uncover the mystery of the Butcher of the Gods' revenge and to stop him before it's too late.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/914da0f1922c6952b94e4f33a808f551.jpg?v=00000507",
+        "teaser": "https://youtu.be/pR6pOzwP2Vo",
+        "genre": [
+            "Adventure",
+            "Sci-Fi"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "4D"
+        ],
+        "duration": 125,
+        "classification": "PG13",
+        "cast": [
+            "Chris Hemsworth",
+            "Chris Pratt",
+            "Christian Bale",
+            "Natalie Portman"
+        ],
+        "director": "Taika Waititi",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": false,
+        "createdAt": "2022-08-30T09:58:16.333Z",
+        "updatedAt": "2022-08-30T17:31:24.211Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 3,
+        "title": "NOP",
+        "description": "'What is a bad miracle?' Oscar® winner Jordan Peele redefined the modern horror genre with 'Huye' and then with 'Us'. Now, reinvent summer movies with a new expansive pop horror nightmare, the epic Nop! The project reunites Peele with Oscar® winner Daniel Kaluuya (Huye, Judas and THE BLACK MESSIAH), who are joined by Keke Palmer (Wall Street Scammers, Alice) and Oscar® nominee Steven Yeun (Minari, Okja) as residents of a distant California property where they witness a mysterious and chilling discovery. ¡Nop!, co-stars Michael Wincott (Hitchcock, Westworld) and Brandon Perea (The OA, American Insurrection), is written and directed by Jordan Peele and produced by Ian Cooper (We, Candyman) and Jordan Peele for Monkeypaw Productions. The film will be released by Universal Pictures worldwide.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/1a004f5abe2b334db21328be1ea6b593.jpg",
+        "teaser": "https://youtu.be/Gvw7qXDJ8T0",
+        "genre": [
+            "Horror"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 130,
+        "classification": "PG13",
+        "cast": [
+            "Daniel Kaluuya",
+            "Keke Palmer"
+        ],
+        "director": "Jordan Peele",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T10:23:26.729Z",
+        "updatedAt": "2022-08-30T10:23:26.729Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 14,
+        "title": "JACK IN THE DAMN BOX 2",
+        "description": "When a dying woman opens the classic 'Jack in the box', she enters into a deal with the demon that lives inside and that he would cure her illness in exchange for helping him claim six innocent victims.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/d8bcde8f014360ffbc0acb5bc1d6cc7d.jpg",
+        "teaser": "https://youtu.be/bo3k-NUnCsQ",
+        "genre": [
+            "Horror"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 93,
+        "classification": "PG13",
+        "cast": [
+            "James Swanton",
+            "Matt McClure"
+        ],
+        "director": "Lawrence Fowler",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:39:11.573Z",
+        "updatedAt": "2022-08-30T12:39:11.573Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 9,
+        "title": "DRAGON BALL SUPER: SUPER HERO",
+        "description": "Son Goku destroyed the Red Patrol at the time. Now, certain individuals have decided to continue their legacy and have created the ultimate androids: Gamma 1 and Gamma 2. These two androids call themselves 'superheroes' and decide to attack Piccolo and Gohan. What is the objective of the new Red Patrol? In the face of imminent danger, the time has come for the awakening of the Superhero!",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/17da58e3fec2aefda832f30653ee1849.jpg",
+        "teaser": "https://youtu.be/PJbyu3NnjFM",
+        "genre": [
+            "Anime"
+        ],
+        "display": [
+            "2D",
+            "IMAX"
+        ],
+        "duration": 100,
+        "classification": "PG13",
+        "cast": [],
+        "director": "Tetsuro Kodama",
+        "writter": null,
+        "language": "japanese",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T12:17:27.081Z",
+        "updatedAt": "2022-08-30T12:22:06.298Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    },
+    {
+        "movie_id": 7,
+        "title": "ELVIS",
+        "description": "From visionary Oscar-nominated filmmaker Baz Luhrmann comes 'Elvis', the Warner Bros. drama. Pictures, starring Austin Butler and Oscar winner Tom Hanks.",
+        "poster": "https://static.cinemarkhoyts.com.ar/Images/Posters/1a9f6f4d2a4aaa805cbab97650d9af55.jpg?v=00000507",
+        "teaser": "https://youtu.be/JoqmHAr3fu8",
+        "genre": [
+            "Biography"
+        ],
+        "display": [
+            "2D",
+            "3D",
+            "IMAX"
+        ],
+        "duration": 160,
+        "classification": "PG16",
+        "cast": [
+            "Austin Butler",
+            "Tom Hanks"
+        ],
+        "director": "Baz Luhrmann",
+        "writter": null,
+        "language": "english",
+        "comingSoon": false,
+        "active": true,
+        "createdAt": "2022-08-30T10:48:39.049Z",
+        "updatedAt": "2022-08-30T10:48:39.049Z",
+        "RatingRatingId": null,
+        "ScheduleScheduleId": null,
+        "Ratings": []
+    }
+]
+
+[
+    {
+        "product_id":2,
+        "name":"PockCorn Small",
+        "stock":10,"price":1,
+        "active":true,
+        "image":"https://thumbs.dreamstime.com/z/popcorn-bag-9793527.jpg",
+        "createdAt":"2022-09-02T14:31:45.888Z",
+        "updatedAt":"2022-09-02T14:31:45.888Z"
+    },{
+        "product_id":3,
+        "name":"PockCorn Medium",
+        "stock":10,
+        "price":2,
+        "active":true,
+        "image":"https://thumbs.dreamstime.com/z/popcorn-bag-9793527.jpg",
+        "createdAt":"2022-09-02T14:32:25.755Z",
+        "updatedAt":"2022-09-02T14:32:25.755Z"
+    },{
+        "product_id":4,
+        "name":"PockCorn Medium",
+        "stock":10,
+        "price":3,
+        "active":true,
+        "image":"https://thumbs.dreamstime.com/z/popcorn-bag-9793527.jpg",
+        "createdAt":"2022-09-02T14:32:44.878Z",
+        "updatedAt":"2022-09-02T14:32:44.878Z"
+    },{
+        "product_id":5,
+        "name":"Soda small",
+        "stock":10,
+        "price":1,
+        "active":true,
+        "image":"https://www.psdmockups.com/wp-content/uploads/2020/10/Paper-Soda-Cup-Straw-PSD-Mockup.jpg",
+        "createdAt":"2022-09-02T14:35:09.234Z",
+        "updatedAt":"2022-09-02T14:35:09.234Z"
+    },{
+        "product_id":6,
+        "name":"Soda Medium",
+        "stock":10,
+        "price":2,
+        "active":true,
+        "image":"https://www.psdmockups.com/wp-content/uploads/2020/10/Paper-Soda-Cup-Straw-PSD-Mockup.jpg",
+        "createdAt":"2022-09-02T14:35:31.130Z",
+        "updatedAt":"2022-09-02T14:35:31.130Z"
+    },{
+        "product_id":7,
+        "name":"Soda XL",
+        "stock":10,
+        "price":3,
+        "active":true,
+        "image":"https://www.psdmockups.com/wp-content/uploads/2020/10/Paper-Soda-Cup-Straw-PSD-Mockup.jpg",
+        "createdAt":"2022-09-02T14:35:40.303Z",
+        "updatedAt":"2022-09-02T14:35:40.303Z"
+    },{
+        "product_id":8,
+        "name":"Hot Dog",
+        "stock":10,
+        "price":1,
+        "active":true,
+        "image":"https://media.istockphoto.com/photos/hot-dog-on-white-picture-id1193883848?k=20&m=1193883848&s=612x612&w=0&h=HpSlYjClI_OL0d1hQ5x5pzs1BgjBkarjaxbHWda8FWQ=",
+        "createdAt":"2022-09-02T14:38:09.504Z",
+        "updatedAt":"2022-09-02T14:38:09.504Z"
+    },{
+        "product_id":9,
+        "name":"Burger",
+        "stock":10,
+        "price":2,
+        "active":true,
+        "image":"https://st3.depositphotos.com/1000504/19178/i/450/depositphotos_191783046-stock-photo-fresh-tasty-burger.jpg",
+        "createdAt":"2022-09-02T14:39:20.858Z",
+        "updatedAt":"2022-09-02T14:39:20.858Z"
+    },{
+        "product_id":1,
+        "name":"PockCorn Extra-Small",
+        "stock":10,
+        "price":0.5,
+        "active":true,
+        "image":"https://thumbs.dreamstime.com/z/popcorn-bag-9793527.jpg",
+        "createdAt":"2022-09-02T14:31:35.539Z","updatedAt":"2022-09-02T14:41:29.717Z"
+    }
+]

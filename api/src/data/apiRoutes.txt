@@ -18,6 +18,9 @@ put <-- modificar peli
 movies/delete/:id CHEKED
 delete <-- borrar peli
 
+movies/activate/:id CHEKED
+put <-- activar peli borrada
+
 movies?name=query CHECKED
 get <-- consultar peli por name 
 
@@ -47,6 +50,9 @@ put <-- modificar producto
 
 products/delete/:id CHECKED
 delete <-- borrar producto
+
+products/activate/:id CHECKED
+put <-- reactiva un producto borrado
 
 products?name=query CHECKED 
 get <-- consultar producto por name 

@@ -57,15 +57,36 @@ const {
 } = sequelize.models;
 
 //Relaciones nuevas
-User.hasMany(Rating, { foreignKey: "user_id" });
+Purchase.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(Purchase, { foreignKey: "user_id" });
-Movie.hasMany(Rating, { foreignKey: "movie_id" });
-Movie.hasMany(Schedule, { foreignKey: "movie_id" });
+ProductDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
 Purchase.hasMany(ProductDetail, { foreignKey: "purchase_id" });
+ScheduleDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
 Purchase.hasMany(ScheduleDetail, { foreignKey: "purchase_id" });
+
+Rating.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Rating, { foreignKey: "user_id" });
+Rating.belongsTo(Movie, { foreignKey: "movie_id" });
+Movie.hasMany(Rating, { foreignKey: "movie_id" });
+Schedule.belongsTo(Movie, { foreignKey: "movie_id" });
+Movie.hasMany(Schedule, { foreignKey: "movie_id" });
+ProductDetail.belongsTo(Product, { foreignKey: "product_id" });
 Product.hasMany(ProductDetail, { foreignKey: "product_id" });
-Schedule.hasMany(ScheduleDetail, { foreignKey: "schedule_id" });
+ScheduleDetail.belongsTo(Schedule, { foreignKey: "schedule_id" });
+Schedule.hasMany(Schedule, { foreignKey: "schedule_id" });
+Schedule.belongsTo(Room, { foreignKey: "room_id" });
 Room.hasMany(Schedule, { foreignKey: "room_id" });
+
+//Relaciones viejas pero no tanto
+// User.hasMany(Rating, { foreignKey: "user_id" });
+// User.hasMany(Purchase, { foreignKey: "user_id" });
+// Movie.hasMany(Rating, { foreignKey: "movie_id" });
+// Movie.hasMany(Schedule, { foreignKey: "movie_id" });
+// Purchase.hasMany(ProductDetail, { foreignKey: "purchase_id" });
+// Purchase.hasMany(ScheduleDetail, { foreignKey: "purchase_id" });
+// Product.hasMany(ProductDetail, { foreignKey: "product_id" });
+// Schedule.hasMany(ScheduleDetail, { foreignKey: "schedule_id" });
+// Room.hasMany(Schedule, { foreignKey: "room_id" });
 
 //Relaciones viejas
 // Rating.hasOne(Movie);

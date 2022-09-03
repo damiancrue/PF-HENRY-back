@@ -28,7 +28,7 @@ users.get("/getAll", async (req, res) => {
     );
     res.status(202).send(usersResult);
   } catch (err) {
-    res.status(500).send({ message: "Internal server error" });
+    res.status(500).send(err.message);
   }
 });
 

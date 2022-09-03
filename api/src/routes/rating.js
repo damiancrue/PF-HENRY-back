@@ -1,16 +1,17 @@
 const { Router } = require("express");
-const { Rating, Movie, User } = require("../db.js");
+const { Rating, Movie } = require("../db.js");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const { rating_id } = req.query;
+  const { id } = req.query;
 
-  if (rating_id) {
+  if (id) {
     try {
-      const rating = await Rating.findByPk(rating_id, {
-        // include: {
-        //   model: Movie,
-        // },
+      const rating = await Rating.findByPk(id, {
+        include: {
+          model: Movie,
+          as: "movie",
+        }
       });
       if (rating) {
         res.json(rating);
@@ -34,41 +35,35 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { rate, review, movie_id, user_id } = req.body;
+    const { movie_id, user_id, rate, review } = req.body;
 
     const rating = await Rating.create({
+      movie_id: parseInt(movie_id),
+      user_id: parseInt(user_id),
       rate: parseInt(rate),
       review,
     });
-
-    // const movie = await Movie.findByPk(parseInt(movie_id));
-    // const user = await User.findByPk(parseInt(user_id));
-    // await rating.addMovie(movie);
-    // await rating.addUser(user);
-
     res.json(rating);
   } catch (e) {
     next(e);
   }
 });
 
-router.put("/update/:rating_id", async (req, res, next) => {
-  const { rating_id } = req.params;
+router.put("/update/:id", async (req, res, next) => {
+  const { id } = req.params;
 
   if (!req.body) res.send("The form is empty");
 
   try {
     const { movie_id, user_id, rate, review } = req.body;
-    const rating = await Rating.findByPk(parseInt(rating_id));
+    const rating = await Rating.findByPk(id);
     if (rating) {
       await rating.update({
+        movie_id: parseInt(movie_id),
+        user_id: parseInt(user_id),
         rate: parseInt(rate),
         review,
       });
-      // const movie = await Movie.findByPk(movie_id);
-      // const user = await User.findByPk(user_id);
-      // await rating.setMovie(movie);
-      // await rating.setUser(user);
       res.json(rating);
     } else {
       res.send("No matches were found");
@@ -78,11 +73,11 @@ router.put("/update/:rating_id", async (req, res, next) => {
   }
 });
 
-router.delete("/delete/:rating_id", async (req, res, next) => {
-  const { rating_id } = req.params;
+router.delete("/delete/:id", async (req, res, next) => {
+  const { id } = req.params;
 
   try {
-    const rating = await Rating.findByPk(parseInt(rating_id));
+    const rating = await Rating.findByPk(id);
     if (rating) {
       await rating.destroy();
       res.send("Rating deleted");
