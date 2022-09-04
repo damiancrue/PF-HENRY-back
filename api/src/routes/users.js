@@ -46,7 +46,7 @@ users.put(
     const { uid } = req.body;
 
     try {
-      User.update(
+      await User.update(
         { active: false },
         {
           where: {
