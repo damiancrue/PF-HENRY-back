@@ -33,6 +33,6 @@ router.use("/seats", SeatRouter);
 router.use("/rooms", RoomRouter);
 router.use("/purchases", PurchaseRouter);
 router.use("/users", UserRouter);
-router.use("schedules", ScheduleRouter);
+router.use("/schedules", ScheduleRouter);
 
 module.exports = router;
