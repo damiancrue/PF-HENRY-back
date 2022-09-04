@@ -23,18 +23,8 @@ router.post('/create', async (req, res, next) => {
     })
 
     console.log(purchase.toJSON())
-    //const purchaseDb = await postPurchase();
-    /* const purchase = await Purchase.create({
-      amount, user_id, product_detail_id
-    }); */
-    /* 
-    console.log('Objeto purchase: ', purchase.toJSON());
-    console.log('user_id: ', user_id);
 
-    let userId = await User.findByPk(user_id);
-    purchase.addUser(userId) */
-    //console.log('purchaseDb: ', purchaseDb)
-    res.send('Hola')
+    res.send(purchase)
   } catch (error) {
     next(error)
   }
@@ -43,13 +33,7 @@ router.post('/create', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const purchase = await Purchase.findAll({
-      include: [{
-        model: User,
-        /* attributes: ['user_id'],
-        through: {
-          attributes: []
-        } */
-      }]
+      where: req.body
     })
     res.send(purchase)
 
