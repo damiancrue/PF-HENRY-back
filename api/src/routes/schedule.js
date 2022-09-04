@@ -6,6 +6,7 @@ const {
   getSchedulesParametersHandler,
 } = require("../controllers/getSchedulesParamatersHandler.js");
 
+//todo
 router.get("/getSchedules", async (req, res) => {
   const { movie_id, room_id, day, time_period, active } = req.query;
 
