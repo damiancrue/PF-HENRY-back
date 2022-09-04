@@ -1,18 +1,9 @@
 const { Router } = require("express");
+const { deletePurchase } = require("../controllers/deletePurchase");
 const router = Router();
-const { postPurchase } = require("../controllers/postPurchase");
+//const { deletePurchase } = require("../controllers/postPurchase");
 const { Purchase, ProductDetail, User } = require("../db");
 
-/* router.post("/create", async (req, res, next) => {
-  if (!req.body) res.send("The form is empty");
-
-  try {
-    const purchase = await postPurchase(req.body);
-    res.json(purchase);
-  } catch (e) {
-    next(e);
-  }
-}); */
 router.post('/create', async (req, res, next) => {
   try {
     const { amount, user_id, product_detail_id } = req.body;
@@ -22,7 +13,7 @@ router.post('/create', async (req, res, next) => {
       product_detail_id
     })
 
-    console.log(purchase.toJSON())
+    //console.log(purchase.toJSON())
 
     res.send(purchase)
   } catch (error) {
@@ -30,16 +21,58 @@ router.post('/create', async (req, res, next) => {
   }
 });
 
+//! Purchase por query o todas
 router.get('/', async (req, res, next) => {
+  const { purchase_id } = req.query
+  const allPurchases = await Purchase.findAll({})
   try {
-    const purchase = await Purchase.findAll({
-      where: req.body
-    })
-    res.send(purchase)
+    if (purchase_id) {
+      const purchase = await Purchase.findByPk(purchase_id, {
+        include: {
+          model: User,
+          attributes: ['name', 'email'],
 
+        }
+      });
+      if (purchase) return res.send(purchase);
+      else return res.send("Not matches were found");
+    } else {
+      res.send(allPurchases);
+    }
   } catch (error) {
-    next(error)
+    next(error);
   }
+});
+
+router.put('/update/:purchase_id', async (req, res, next) => {
+  const { purchase_id } = req.params;
+  const { amount, movie_id, user_id } = req.body;
+  if (!req.body) return ('The form is empty');
+  try {
+    const purchase = await Purchase.findByPk(purchase_id);
+    if (purchase) {
+      await purchase.update({
+        amount, movie_id, user_id
+      });
+      res.send(purchase);
+    } else return res.send('No matches found');
+  } catch (error) {
+
+  }
+});
+//! Borrado soft purchase
+router.delete('/delete/:purchase_id', async (req, res, next) => {
+  const { purchase_id } = req.params;
+  try {
+    const result = await deletePurchase(purchase_id);
+    if (result) res.json(result);
+    else {
+      res.send("No matches were found");
+    }
+  } catch (e) {
+    next(e);
+  }
+
 })
 
 module.exports = router;
