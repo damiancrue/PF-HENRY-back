@@ -13,17 +13,23 @@ const getSchedulesParametersHandler = (
   paramObj.room_f = room ? room : 0;
   paramObj.room_t = room ? room : highNumber;
   paramObj.day_f =
-    day?.split("_")[0] !== "null"
-      ? new Date(day?.split("_")[0] + "T03:00:00.000Z").toISOString()
+    day?.split("_")[0] !== "null" && day?.split("_")[0] !== undefined
+      ? new Date(day.split("_")[0] + "T03:00:00.000Z").toISOString()
       : new Date("1000-01-01").toISOString();
   paramObj.day_t =
-    day?.split("_")[1] !== "null"
-      ? new Date(day?.split("_")[1] + "T03:00:00.000Z").toISOString()
+    day?.split("_")[1] !== "null" && day?.split("_")[1] !== undefined
+      ? new Date(day.split("_")[1] + "T03:00:00.000Z").toISOString()
       : new Date("9999-01-01").toISOString();
   paramObj.time_period_f =
-    time_period?.split("_")[0] !== "null" ? time_period.split("_")[0] : "00:00";
+    time_period?.split("_")[0] !== "null" &&
+    time_period?.split("_")[0] !== undefined
+      ? time_period.split("_")[0]
+      : "00:00";
   paramObj.time_period_t =
-    time_period?.split("_")[1] !== "null" ? time_period.split("_")[1] : "23:59";
+    time_period?.split("_")[1] !== "null" &&
+    time_period?.split("_")[1] !== undefined
+      ? time_period.split("_")[1]
+      : "23:59";
   paramObj.active_true = active ? active : true;
   paramObj.active_false = active ? active : false;
 };
