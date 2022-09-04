@@ -1,17 +1,30 @@
 const { Router } = require("express");
-const { Rating, Movie } = require("../db.js");
+const { Rating, Movie, User } = require("../db.js");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const { id } = req.query;
+  const { rating_id } = req.query;
 
-  if (id) {
+  if (rating_id) {
     try {
-      const rating = await Rating.findByPk(id, {
-        include: {
-          model: Movie,
-          as: "movie",
-        }
+      const rating = await Rating.findByPk(rating_id, {
+        include: [
+          {
+            model: Movie,
+            attributes: [
+              "movie_id",
+              "title",
+              "poster",
+              "genre",
+              "display",
+              "language",
+            ],
+          },
+          {
+            model: User,
+            attributes: ["user_id", "name"],
+          },
+        ],
       });
       if (rating) {
         res.json(rating);
@@ -23,7 +36,25 @@ router.get("/", async (req, res, next) => {
     }
   } else {
     try {
-      const ratings = await Rating.findAll();
+      const ratings = await Rating.findAll({
+        include: [
+          {
+            model: Movie,
+            attributes: [
+              "movie_id",
+              "title",
+              "poster",
+              "genre",
+              "display",
+              "language",
+            ],
+          },
+          {
+            model: User,
+            attributes: ["user_id", "name"],
+          },
+        ],
+      });
       res.json(ratings);
     } catch (e) {
       next(e);
@@ -35,34 +66,35 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { movie_id, user_id, rate, review } = req.body;
+    const { rate, review, movie_id, user_id } = req.body;
 
     const rating = await Rating.create({
-      movie_id: parseInt(movie_id),
-      user_id: parseInt(user_id),
       rate: parseInt(rate),
       review,
+      movie_id: parseInt(movie_id),
+      user_id,
     });
+
     res.json(rating);
   } catch (e) {
     next(e);
   }
 });
 
-router.put("/update/:id", async (req, res, next) => {
-  const { id } = req.params;
+router.put("/update/:rating_id", async (req, res, next) => {
+  const { rating_id } = req.params;
 
   if (!req.body) res.send("The form is empty");
 
   try {
     const { movie_id, user_id, rate, review } = req.body;
-    const rating = await Rating.findByPk(id);
+    const rating = await Rating.findByPk(parseInt(rating_id));
     if (rating) {
       await rating.update({
-        movie_id: parseInt(movie_id),
-        user_id: parseInt(user_id),
         rate: parseInt(rate),
         review,
+        movie_id: parseInt(movie_id),
+        user_id,
       });
       res.json(rating);
     } else {
@@ -73,11 +105,11 @@ router.put("/update/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/delete/:id", async (req, res, next) => {
-  const { id } = req.params;
+router.delete("/delete/:rating_id", async (req, res, next) => {
+  const { rating_id } = req.params;
 
   try {
-    const rating = await Rating.findByPk(id);
+    const rating = await Rating.findByPk(parseInt(rating_id));
     if (rating) {
       await rating.destroy();
       res.send("Rating deleted");
