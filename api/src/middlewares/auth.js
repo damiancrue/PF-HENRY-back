@@ -2,7 +2,7 @@ const firebase = require("../firebase-config.js");
 
 //Revisa que el token del usuario este activo e informa
 const checkActiveUser = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.body.token;
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {

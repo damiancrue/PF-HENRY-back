@@ -14,7 +14,7 @@ const users = Router();
 
 //Valida que el usuario exista, o que la sesion no haya terminado
 users.get("/validateActiveUser", checkActiveUser, (req, res) => {
-  res.status(202).send({ message: "Valid user" });
+  res.status(200).send({ message: "Valid user" });
 });
 
 //Busca a todos los usuarios, con la opcion de pasarle
@@ -26,16 +26,10 @@ users.get("/getAll", async (req, res) => {
     const usersResult = await User.findAll(
       userHelper.getUsersOptionalParameter(active)
     );
-    res.status(202).send(usersResult);
+    res.status(200).send(usersResult);
   } catch (err) {
     res.status(500).send(err.message);
   }
-});
-
-//Verifica si el usuario esta logueado
-//De no estarlo, el middleware envia la respuesta y no se llega aca
-users.get("/isLogged", checkActiveUser, async (req, res) => {
-  res.status(200).send({ message: "User is logged" });
 });
 
 //Setea el flag de active en false
@@ -46,7 +40,7 @@ users.put(
     const { uid } = req.body;
 
     try {
-      User.update(
+      await User.update(
         { active: false },
         {
           where: {
