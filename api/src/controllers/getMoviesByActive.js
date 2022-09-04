@@ -8,7 +8,7 @@ const getMoviesByActive = async (active) => {
     },
     include: {
       model: Rating,
-      attributes: ["movie_id", "rate", "review"],
+      attributes: ["movie_id", "rate", "review", "user_id"],
       throught: {
         attributes: ["movie_id"],
       },

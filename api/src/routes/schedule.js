@@ -1,11 +1,12 @@
 const { Router } = require("express");
-const { Schedule } = require("../db.js");
+const { Schedule, Movie, Room } = require("../db.js");
 const { Op } = require("sequelize");
 const router = Router();
 const {
   getSchedulesParametersHandler,
 } = require("../controllers/getSchedulesParamatersHandler.js");
 
+//todo
 router.get("/getSchedules", async (req, res) => {
   const { movie_id, room_id, day, time_period, active } = req.query;
 
@@ -38,10 +39,19 @@ router.get("/getSchedules", async (req, res) => {
           { active: paramObj.active_false },
         ],
       },
+      include: [
+        {
+          model: Movie,
+          attributes: ["movie_id", "title", "poster", "display", "duration"],
+        },
+        { model: Room, attributes: ["room_id", "name", "display_type"] },
+      ],
     });
     if (schedules.length === 0)
-      return res.status(404).send({ message: "No schedules found" });
-    return res.status(200).send(schedules);
+      return res
+        .status(404)
+        .send({ message: "No schedules found", paramObj: paramObj });
+    return res.status(200).send([schedules, paramObj]);
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }

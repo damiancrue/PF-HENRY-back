@@ -16,7 +16,6 @@ const getMoviesByParameter = async (name, active) => {
 
   if (active !== undefined) return await getMoviesByActive(active);
 
-  // return await Movie.findAll({});
   return await getMovies();
 };
 
