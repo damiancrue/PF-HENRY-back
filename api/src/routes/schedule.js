@@ -61,7 +61,7 @@ router.get("/get/:id", async (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).send({ message: "ID must be informed" });
   try {
-    const schedule = Schedule.findByPk(id);
+    const schedule = await Schedule.findByPk(id);
     if (schedule) return res.status(200).send(schedule);
     return res.status(404).send({ message: "No schedule found for given ID" });
   } catch (err) {
