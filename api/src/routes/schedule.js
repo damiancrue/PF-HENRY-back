@@ -69,7 +69,7 @@ router.get("/get/:id", async (req, res) => {
         },
         {
           model: Room,
-          attributes: ["room_id", "name", "display_type"],
+          attributes: ["room_id", "name", "display_type", "room_seats"],
         },
       ],
     });
