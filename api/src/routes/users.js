@@ -55,6 +55,21 @@ users.put(
   }
 );
 
+users.put("/modifyRole", async (req, res) => {
+  const { email, role } = req.body;
+  try {
+    const userExists = await userHelper.getUserID(email);
+    if (userExists) {
+      await User.update({ role_id: role }, { where: { email: email } });
+      res.status(200).send();
+    } else {
+      res.status(404).send({ message: "Specified user does not exists" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 //Setea el flag de active en true
 users.put("/unbanUser", async (req, res) => {
   const { email } = req.body;
