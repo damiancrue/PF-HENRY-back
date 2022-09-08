@@ -1,5 +1,5 @@
-const { Movie, Rating } = require("../db");
-const { Op } = require("sequelize");
+// const { Movie, Rating } = require("../db");
+// const { Op } = require("sequelize");
 
 const { getMovies } = require("../controllers/getMovies");
 const { getMoviesByName } = require("../controllers/getMoviesByName");
@@ -16,7 +16,6 @@ const getMoviesByParameter = async (name, active) => {
 
   if (active !== undefined) return await getMoviesByActive(active);
 
-  // return await Movie.findAll({});
   return await getMovies();
 };
 

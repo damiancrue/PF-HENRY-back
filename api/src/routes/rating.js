@@ -8,10 +8,16 @@ router.get("/", async (req, res, next) => {
   if (rating_id) {
     try {
       const rating = await Rating.findByPk(rating_id, {
-        include: {
-          // model: Movie,
-          model: User,
-        },
+        include: [
+          {
+            model: Movie,
+            attributes: ["movie_id"],
+          },
+          {
+            model: User,
+            attributes: ["name", "email"],
+          },
+        ],
       });
       if (rating) {
         res.json(rating);
@@ -24,14 +30,50 @@ router.get("/", async (req, res, next) => {
   } else {
     try {
       const ratings = await Rating.findAll({
-        include: {
-          model: User,
-        },
+        include: [
+          {
+            model: Movie,
+            attributes: ["movie_id"],
+          },
+          {
+            model: User,
+            attributes: ["name", "email"],
+          },
+        ],
       });
       res.json(ratings);
     } catch (e) {
       next(e);
     }
+  }
+});
+
+router.get("/:movie_id", async (req, res, next) => {
+  const { movie_id } = req.params;
+
+  try {
+    const rating = await Rating.findAll({
+      where: {
+        movie_id,
+      },
+      include: [
+        {
+          model: Movie,
+          attributes: ["movie_id"],
+        },
+        {
+          model: User,
+          attributes: ["name", "email"],
+        },
+      ],
+    });
+    if (rating) {
+      res.json(rating);
+    } else {
+      res.send("No matches were found");
+    }
+  } catch (e) {
+    next(e);
   }
 });
 
@@ -47,7 +89,6 @@ router.post("/create", async (req, res, next) => {
       movie_id: parseInt(movie_id),
       user_id,
     });
-
 
     res.json(rating);
   } catch (e) {
