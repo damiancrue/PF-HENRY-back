@@ -22,6 +22,7 @@ const RoomRouter = require("./room.js");
 const PurchaseRouter = require("./purchase.js");
 const UserRouter = require("./users.js");
 const ScheduleRouter = require("./schedule.js");
+const MailRouter = require("./mail.js");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
@@ -34,5 +35,6 @@ router.use("/rooms", RoomRouter);
 router.use("/purchases", PurchaseRouter);
 router.use("/users", UserRouter);
 router.use("/schedules", ScheduleRouter);
+router.use("/mail", MailRouter);
 
 module.exports = router;

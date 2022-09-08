@@ -1,15 +1,7 @@
-const { Movie, Rating } = require("../db");
+const { Movie } = require("../db");
 
 const getMovies = async () => {
-  return await Movie.findAll({
-    include: {
-      model: Rating,
-      attributes: ["movie_id", "rate", "review", "user_id"],
-      throught: {
-        attributes: ["movie_id"],
-      },
-    },
-  });
+  return await Movie.findAll();
 };
 
 module.exports = {
