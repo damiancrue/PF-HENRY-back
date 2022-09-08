@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { deletePurchase } = require("../controllers/deletePurchase");
 const router = Router();
-//const { deletePurchase } = require("../controllers/postPurchase");
+
 const { Purchase, ProductDetail, User } = require("../db");
 
 router.post('/create', async (req, res, next) => {
@@ -12,9 +12,6 @@ router.post('/create', async (req, res, next) => {
       user_id,
       product_detail_id
     })
-
-    //console.log(purchase.toJSON())
-
     res.send(purchase)
   } catch (error) {
     next(error)
@@ -24,19 +21,35 @@ router.post('/create', async (req, res, next) => {
 //! Purchase por query o todas
 router.get('/', async (req, res, next) => {
   const { purchase_id } = req.query
-  const allPurchases = await Purchase.findAll({})
   try {
     if (purchase_id) {
       const purchase = await Purchase.findByPk(purchase_id, {
-        include: {
-          model: User,
-          attributes: ['name', 'email'],
-
-        }
+        include: [
+          {
+            model: User,
+            attributes: ['name', 'email'],
+          },
+          {
+            model: ProductDetail,
+            attributes: ['product_quantity']
+          }
+        ]
       });
       if (purchase) return res.send(purchase);
       else return res.send("Not matches were found");
     } else {
+      const allPurchases = await Purchase.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['name', 'email'],
+          },
+          {
+            model: ProductDetail,
+            attributes: ['product_quantity']
+          }
+        ]
+      })
       res.send(allPurchases);
     }
   } catch (error) {
