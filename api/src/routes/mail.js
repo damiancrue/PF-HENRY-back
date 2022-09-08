@@ -75,4 +75,34 @@ router.post("/contact/response", (req, res) => {
   }
 });
 
+router.post("/register/response", (req, res) => {
+  if (!req.body) res.status(400).send("No body provided");
+
+  try {
+    const { name, email } = req.body;
+
+    const responseMail = `Hello! ${name}\nWe hope you are well. Your registration process on our platform has been completed successfully.\nThank you for choosing us.`;
+
+    const detailsResponse = {
+      from: ADMIN_MAIL,
+      to: email,
+      subject: "Successful registration",
+      text: responseMail,
+    };
+
+    transporter.sendMail(detailsResponse, (err, info) => {
+      if (err) {
+        res.status(500).send(err.message);
+      } else {
+        console.log(info.envelope);
+        console.log(info.response);
+        res.status(200).json(req.body);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;

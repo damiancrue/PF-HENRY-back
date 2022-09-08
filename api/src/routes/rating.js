@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
           },
           {
             model: User,
-            attributes: ["user_id", "name"],
+            attributes: ["name", "email"],
           },
         ],
       });
@@ -51,7 +51,7 @@ router.get("/", async (req, res, next) => {
           },
           {
             model: User,
-            attributes: ["user_id", "name"],
+            attributes: ["name", "email"],
           },
         ],
       });

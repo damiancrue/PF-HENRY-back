@@ -10,7 +10,7 @@ const getMoviesByName = async (name) => {
     },
     include: {
       model: Rating,
-      attributes: ["movie_id", "rate", "review", "user_id"],
+      attributes: ["rate", "review"],
       throught: {
         attributes: ["movie_id"],
       },
