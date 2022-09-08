@@ -11,14 +11,7 @@ router.get("/", async (req, res, next) => {
         include: [
           {
             model: Movie,
-            attributes: [
-              "movie_id",
-              "title",
-              "poster",
-              "genre",
-              "display",
-              "language",
-            ],
+            attributes: ["movie_id"],
           },
           {
             model: User,
@@ -40,14 +33,7 @@ router.get("/", async (req, res, next) => {
         include: [
           {
             model: Movie,
-            attributes: [
-              "movie_id",
-              "title",
-              "poster",
-              "genre",
-              "display",
-              "language",
-            ],
+            attributes: ["movie_id"],
           },
           {
             model: User,
@@ -59,6 +45,35 @@ router.get("/", async (req, res, next) => {
     } catch (e) {
       next(e);
     }
+  }
+});
+
+router.get("/:movie_id", async (req, res, next) => {
+  const { movie_id } = req.params;
+
+  try {
+    const rating = await Rating.findAll({
+      where: {
+        movie_id,
+      },
+      include: [
+        {
+          model: Movie,
+          attributes: ["movie_id"],
+        },
+        {
+          model: User,
+          attributes: ["name", "email"],
+        },
+      ],
+    });
+    if (rating) {
+      res.json(rating);
+    } else {
+      res.send("No matches were found");
+    }
+  } catch (e) {
+    next(e);
   }
 });
 

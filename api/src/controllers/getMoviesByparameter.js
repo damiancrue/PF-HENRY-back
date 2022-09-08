@@ -1,5 +1,5 @@
-const { Movie, Rating } = require("../db");
-const { Op } = require("sequelize");
+// const { Movie, Rating } = require("../db");
+// const { Op } = require("sequelize");
 
 const { getMovies } = require("../controllers/getMovies");
 const { getMoviesByName } = require("../controllers/getMoviesByName");

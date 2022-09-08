@@ -1,4 +1,4 @@
-const { Movie, Rating } = require("../db");
+const { Movie } = require("../db");
 const { Op } = require("sequelize");
 
 const getMoviesByName = async (name) => {
@@ -6,13 +6,6 @@ const getMoviesByName = async (name) => {
     where: {
       title: {
         [Op.iLike]: `%${name}%`,
-      },
-    },
-    include: {
-      model: Rating,
-      attributes: ["rate", "review"],
-      throught: {
-        attributes: ["movie_id"],
       },
     },
   });
