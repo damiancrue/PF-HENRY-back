@@ -44,7 +44,7 @@ router.get("/getSchedules", async (req, res) => {
           model: Movie,
           attributes: ["movie_id", "title", "poster", "display", "duration"],
         },
-        { model: Room, attributes: ["room_id", "name", "display_type"] },
+        { model: Room, attributes: ["room_id", "name", "display_type", "room_seats"] },
       ],
     });
     if (schedules.length === 0)
