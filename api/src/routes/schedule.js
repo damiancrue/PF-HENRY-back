@@ -102,6 +102,40 @@ router.put("/modifySchedule", async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 });
+//!-----------------------------------------------------------
+router.put("/modifySeats", async (req, res, next) => {
+  if (!req.body) return res.send("The form is empty")
+  try {
+    const { schedule_id, key, value } = req.query;
+    const { day, time, active, movie_id, room_id } = req.body;
+    const schedule = await Schedule.findByPk(schedule_id, {
+      include: [
+        {
+          model: Room,
+          attributes: ["room_seats"],
+        },
+      ]
+    });
+    if (schedule) {
+      let seats = schedule.Room.room_seats
+      if (seats.hasOwnProperty(key)) {
+        if (seats[key] === true) {
+          seats[key] = value === 'true'
+        }
+      }
+      const seatAvailable = await schedule.update({
+        day, time, active, movie_id, room_id
+      });
+
+      console.log(seatAvailable.toJSON())
+      return res.send(seatAvailable)
+    }
+    res.status(404).send("Schedule not found")
+  } catch (error) {
+    next(error)
+  }
+});
+//!-----------------------------------------------------------
 
 router.post("/createSchedule", async (req, res) => {
   const values = Object.values(req.body);
