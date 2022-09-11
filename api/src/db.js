@@ -57,12 +57,13 @@ const {
 } = sequelize.models;
 
 //Relaciones nuevas
-Purchase.belongsTo(User, { foreignKey: "user_id" });
+
 User.hasMany(Purchase, { foreignKey: "user_id" });
-ProductDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
+Purchase.belongsTo(User, { foreignKey: "user_id" });
 Purchase.hasMany(ProductDetail, { foreignKey: "purchase_id" });
-ScheduleDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
+ProductDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
 Purchase.hasMany(ScheduleDetail, { foreignKey: "purchase_id" });
+ScheduleDetail.belongsTo(Purchase, { foreignKey: "purchase_id" });
 
 Rating.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(Rating, { foreignKey: "user_id" });

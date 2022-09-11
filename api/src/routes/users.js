@@ -24,7 +24,7 @@ users.get("/getAll", async (req, res) => {
 
   try {
     const usersResult = await User.findAll(
-      userHelper.getUsersOptionalParameter(active)
+      //userHelper.getUsersOptionalParameter(active)
     );
     res.status(200).send(usersResult);
   } catch (err) {

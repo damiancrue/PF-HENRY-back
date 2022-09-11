@@ -35,6 +35,10 @@ module.exports = (sequelize) => {
         isFloat: true,
       },
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
     // status_id: {
     //   type: DataTypes.INTEGER,
     // },
