@@ -19,11 +19,9 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      //NO enviar el user_id
       const result = {
         rating_id: rating.rating_id,
         movie_id: rating.movie_id,
-        // user_id: rating.user_id,
         rate: rating.rate,
         review: rating.review,
         user: rating.User,
@@ -50,12 +48,10 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      //NO enviar el user_id
       const result = ratings.map((rating) => {
         return {
           rating_id: rating.rating_id,
           movie_id: rating.movie_id,
-          // user_id: rating.user_id,
           rate: rating.rate,
           review: rating.review,
           user: rating.User,
@@ -87,12 +83,10 @@ router.get("/:movie_id", async (req, res, next) => {
         },
       ],
     });
-    //NO enviar el user_id
     const result = rating.map((rating) => {
       return {
         rating_id: rating.rating_id,
         movie_id: rating.movie_id,
-        // user_id: rating.user_id,
         rate: rating.rate,
         review: rating.review,
         user: rating.User,
@@ -112,21 +106,27 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { rate, review, movie_id, user_id } = req.body;
+    const { rate, review, movie_id, email } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
 
     const rating = await Rating.create({
       rate: parseInt(rate),
       review,
       movie_id: parseInt(movie_id),
-      user_id,
+      user_id: user.user_id,
     });
+
     const result = {
       rating_id: rating.rating_id,
       movie_id: rating.movie_id,
-      // user_id: rating.user_id,
       rate: rating.rate,
       review: rating.review,
-    }
+    };
 
     res.json(result);
   } catch (e) {
@@ -140,19 +140,23 @@ router.put("/update/:rating_id", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { movie_id, user_id, rate, review } = req.body;
+    const { movie_id, email, rate, review } = req.body;
     const rating = await Rating.findByPk(parseInt(rating_id));
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
     if (rating) {
       await rating.update({
         rate: parseInt(rate),
         review,
         movie_id: parseInt(movie_id),
-        user_id,
+        user_id: user.user_id,
       });
       const result = {
         rating_id: rating.rating_id,
         movie_id: rating.movie_id,
-        // user_id: rating.user_id,
         rate: rating.rate,
         review: rating.review,
       };
