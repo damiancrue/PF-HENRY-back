@@ -19,8 +19,17 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      if (rating) {
-        res.json(rating);
+      //NO enviar el user_id
+      const result = {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        // user_id: rating.user_id,
+        rate: rating.rate,
+        review: rating.review,
+        user: rating.User,
+      };
+      if (result) {
+        res.json(result);
       } else {
         res.send("No matches were found");
       }
@@ -41,7 +50,18 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      res.json(ratings);
+      //NO enviar el user_id
+      const result = ratings.map((rating) => {
+        return {
+          rating_id: rating.rating_id,
+          movie_id: rating.movie_id,
+          // user_id: rating.user_id,
+          rate: rating.rate,
+          review: rating.review,
+          user: rating.User,
+        };
+      });
+      res.json(result);
     } catch (e) {
       next(e);
     }
@@ -67,8 +87,19 @@ router.get("/:movie_id", async (req, res, next) => {
         },
       ],
     });
-    if (rating) {
-      res.json(rating);
+    //NO enviar el user_id
+    const result = rating.map((rating) => {
+      return {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        // user_id: rating.user_id,
+        rate: rating.rate,
+        review: rating.review,
+        user: rating.User,
+      };
+    });
+    if (result) {
+      res.json(result);
     } else {
       res.send("No matches were found");
     }
@@ -89,8 +120,15 @@ router.post("/create", async (req, res, next) => {
       movie_id: parseInt(movie_id),
       user_id,
     });
+    const result = {
+      rating_id: rating.rating_id,
+      movie_id: rating.movie_id,
+      // user_id: rating.user_id,
+      rate: rating.rate,
+      review: rating.review,
+    }
 
-    res.json(rating);
+    res.json(result);
   } catch (e) {
     next(e);
   }
@@ -111,7 +149,14 @@ router.put("/update/:rating_id", async (req, res, next) => {
         movie_id: parseInt(movie_id),
         user_id,
       });
-      res.json(rating);
+      const result = {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        // user_id: rating.user_id,
+        rate: rating.rate,
+        review: rating.review,
+      };
+      res.json(result);
     } else {
       res.send("No matches were found");
     }
