@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
     //   },
     // },
     room_seats: {
-      type: DataTypes.JSON,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     display_type: {
