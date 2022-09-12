@@ -3,10 +3,11 @@ const firebase = require("../firebase-config.js");
 //Revisa que el token del usuario este activo e informa
 const checkActiveUser = async (req, res, next) => {
   const token = req.query.token;
+
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {
-      req.body.uid = decodedValue.uid;
+      req.uid = decodedValue.uid;
       return next();
     }
     return res.status(410).send({ message: "Session no longer active" });
@@ -43,11 +44,14 @@ const checkValidUser = async (req, res, next) => {
 
 const getUID = async (req, res, next) => {
   const token = req.body.token;
+  console.log(token);
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
+    console.log(decodedValue);
     if (decodedValue) {
       const uid = decodedValue.uid;
-      req.body.uid = uid;
+      req.uid = uid;
+
       next();
     } else {
       return res
@@ -55,7 +59,7 @@ const getUID = async (req, res, next) => {
         .send({ message: "Invalid user or session no longer active" });
     }
   } catch (err) {
-    return res.status(500).send({ message: "Internal server error" });
+    return res.status(404).send({ message: "Internal server error" });
   }
 };
 

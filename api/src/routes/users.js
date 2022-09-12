@@ -13,10 +13,16 @@ const e = require("express");
 const users = Router();
 
 //Valida que el usuario exista, o que la sesion no haya terminado
-users.get("/isActive", checkActiveUser, (req, res) => {
-  const { uid } = req.body.uid;
+users.get("/isActive", checkActiveUser, async (req, res) => {
+  const uid = req.uid;
+
   try {
-    const user = User.findByPk(uid);
+    const user = await User.findByPk(uid);
+
+    //Lineas agregadas para ambientes de test
+    if (user === null)
+      return res.status(204).send({ message: "User no longer active" });
+    //
     return res.status(200).send({ email: user.email, name: user.name });
   } catch (err) {
     return res.status(500).send({ message: err.message });
@@ -29,9 +35,10 @@ users.get("/getAll", async (req, res) => {
   const { active } = req.query;
 
   try {
-    const usersResult = await User.findAll(
+    const usersResult = await User
+      .findAll
       //userHelper.getUsersOptionalParameter(active)
-    );
+      ();
     res.status(200).send(usersResult);
   } catch (err) {
     res.status(500).send(err.message);
@@ -96,12 +103,13 @@ users.put("/unbanUser", async (req, res) => {
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
 users.post(
   "/createUser",
-  //getUID,  //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
+  getUID, //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
   async (req, res) => {
-    const { email, username, role, uid } = req.body;
-
+    const { email, username, role } = req.body;
+    const uid = req.uid;
+    console.log(uid);
     if (!email || !username || email === "" || username === "")
-      res.status(400).send({
+      return res.status(400).send({
         message: "All creation fields must be sent, and they can't be empty",
       });
 
@@ -113,22 +121,23 @@ users.post(
         role_id: role,
         active: true,
       });
-      res.status(201).send({ message: "User created" });
+      return res.status(201).send({ message: "User created" });
     } catch (err) {
-      res.status(400).send({ message: err.message });
+      return res.status(400).send({ message: err.message });
     }
   }
 );
 
 //Valida que el usuario sea admin
 users.post("/isAdmin", getUID, (req, res) => {
-  const { uid } = req.body;
+  const uid = req.uid;
+  console.log(uid);
   try {
     userRole = User.findByPk(uid);
     if (userRole.role_id === "A") {
       return res.status(200).send(true);
     } else {
-      return res.status(200).send(false);
+      return res.status(202).send(false);
     }
   } catch (err) {
     res.status(500).send({ message: err.message });
