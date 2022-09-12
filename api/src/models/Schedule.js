@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
     //   type: DataTypes.INTEGER,
     //   allowNull: false,
     // },
+    boughtSeats: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+    },
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
