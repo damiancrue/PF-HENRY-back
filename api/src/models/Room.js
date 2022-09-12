@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
     // },
     room_seats: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
+      //allowNull: false,
     },
     display_type: {
       type: DataTypes.STRING,
@@ -37,6 +37,6 @@ module.exports = (sequelize) => {
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    }
+    },
   });
 };
