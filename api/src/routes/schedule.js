@@ -44,7 +44,10 @@ router.get("/getSchedules", async (req, res) => {
           model: Movie,
           attributes: ["movie_id", "title", "poster", "display", "duration"],
         },
-        { model: Room, attributes: ["room_id", "name", "display_type"] },
+        {
+          model: Room,
+          attributes: ["room_id", "name", "display_type", "room_seats"],
+        },
       ],
     });
     if (schedules.length === 0)
@@ -102,6 +105,44 @@ router.put("/modifySchedule", async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 });
+//!-----------------------------------------------------------
+// router.put("/modifySeats", async (req, res, next) => {
+//   if (!req.body) return res.send("The form is empty");
+//   try {
+//     const { schedule_id, key, value } = req.query;
+//     const { day, time, active, movie_id, room_id } = req.body;
+//     const schedule = await Schedule.findByPk(schedule_id, {
+//       include: [
+//         {
+//           model: Room,
+//           attributes: ["room_seats"],
+//         },
+//       ],
+//     });
+//     if (schedule) {
+//       let seats = schedule.Room.room_seats;
+//       if (seats.hasOwnProperty(key)) {
+//         if (seats[key] === true) {
+//           seats[key] = value === "true";
+//         }
+//       }
+//       const seatAvailable = await schedule.update({
+//         day,
+//         time,
+//         active,
+//         movie_id,
+//         room_id,
+//       });
+
+//       console.log(seatAvailable.toJSON());
+//       return res.send(seatAvailable);
+//     }
+//     res.status(404).send("Schedule not found");
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+//!-----------------------------------------------------------
 
 router.post("/createSchedule", async (req, res) => {
   const values = Object.values(req.body);
@@ -138,5 +179,79 @@ router.delete("/deleteSchedule", async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 });
+//!-------------------------------------------------------------------------------------------------
+router.put("/soldSeats/:schedule_id", async (req, res, next) => {
+  const { schedule_id } = req.params;
+
+  if (!req.body) res.send("The form is empty");
+
+  try {
+    const { sold } = req.body;
+    const schedule = await Schedule.findByPk(schedule_id);
+    if (schedule) {
+      const aux = schedule.boughtSeats;
+
+      function verifySeats(seats) {
+        for (let i = 0; i < seats.length; i++) {
+          if (aux.includes(seats[i])) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (verifySeats(sold)) {
+        const soldSeats = await schedule.update({
+          boughtSeats: [...aux, ...sold],
+        });
+        return res.send(soldSeats);
+      }
+      return res.status(400).send("Seats already sold");
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
+// router.put("/soldSeats", async (req, res) => {
+//   if (!req.body) return res.send("The form is empty");
+//   try {
+//     const { schedule_id, sold } = req.body;
+
+//     const schedule = await Schedule.findByPk(schedule_id, {
+//       include: [
+//         {
+//           model: Movie,
+//           attributes: ["movie_id", "title", "poster", "display", "duration"],
+//         },
+//         {
+//           model: Room,
+//           attributes: ["room_seats", "room_id"],
+//         },
+//       ],
+//     });
+//     if (schedule) {
+//       let seats = schedule.Room.room_seats;
+//       if (sold) {
+//         sold.forEach((seat) => {
+//         if (seats.hasOwnProperty(seat)) {
+//           if (seats[seat] === true) {
+//             seats[seat] = false;
+//           }
+//         }
+//       });
+//     }
+//       const seatAvailable = await schedule.update({
+//         boughtSeats: schedule.boughtSeats ? schedule.boughtSeats.concat(sold) : sold,
+//         Room: { room_seats: seats },
+//       });
+//       console.log(seatAvailable.toJSON());
+//       return res.send(seatAvailable);
+//     }
+//     return res.status(200).send({ message: "Bought seats updated" });
+//   } catch (err) {
+//     return res.status(500).send({ message: err.message });
+//   }
+// });
 
 module.exports = router;

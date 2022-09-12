@@ -19,8 +19,15 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      if (rating) {
-        res.json(rating);
+      const result = {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        rate: rating.rate,
+        review: rating.review,
+        user: rating.User,
+      };
+      if (result) {
+        res.json(result);
       } else {
         res.send("No matches were found");
       }
@@ -41,7 +48,16 @@ router.get("/", async (req, res, next) => {
           },
         ],
       });
-      res.json(ratings);
+      const result = ratings.map((rating) => {
+        return {
+          rating_id: rating.rating_id,
+          movie_id: rating.movie_id,
+          rate: rating.rate,
+          review: rating.review,
+          user: rating.User,
+        };
+      });
+      res.json(result);
     } catch (e) {
       next(e);
     }
@@ -67,8 +83,17 @@ router.get("/:movie_id", async (req, res, next) => {
         },
       ],
     });
-    if (rating) {
-      res.json(rating);
+    const result = rating.map((rating) => {
+      return {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        rate: rating.rate,
+        review: rating.review,
+        user: rating.User,
+      };
+    });
+    if (result) {
+      res.json(result);
     } else {
       res.send("No matches were found");
     }
@@ -81,16 +106,29 @@ router.post("/create", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { rate, review, movie_id, user_id } = req.body;
+    const { rate, review, movie_id, email } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
 
     const rating = await Rating.create({
       rate: parseInt(rate),
       review,
       movie_id: parseInt(movie_id),
-      user_id,
+      user_id: user.user_id,
     });
 
-    res.json(rating);
+    const result = {
+      rating_id: rating.rating_id,
+      movie_id: rating.movie_id,
+      rate: rating.rate,
+      review: rating.review,
+    };
+
+    res.json(result);
   } catch (e) {
     next(e);
   }
@@ -102,16 +140,27 @@ router.put("/update/:rating_id", async (req, res, next) => {
   if (!req.body) res.send("The form is empty");
 
   try {
-    const { movie_id, user_id, rate, review } = req.body;
+    const { movie_id, email, rate, review } = req.body;
     const rating = await Rating.findByPk(parseInt(rating_id));
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
     if (rating) {
       await rating.update({
         rate: parseInt(rate),
         review,
         movie_id: parseInt(movie_id),
-        user_id,
+        user_id: user.user_id,
       });
-      res.json(rating);
+      const result = {
+        rating_id: rating.rating_id,
+        movie_id: rating.movie_id,
+        rate: rating.rate,
+        review: rating.review,
+      };
+      res.json(result);
     } else {
       res.send("No matches were found");
     }
