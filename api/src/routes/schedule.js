@@ -44,7 +44,10 @@ router.get("/getSchedules", async (req, res) => {
           model: Movie,
           attributes: ["movie_id", "title", "poster", "display", "duration"],
         },
-        { model: Room, attributes: ["room_id", "name", "display_type", "room_seats"] },
+        {
+          model: Room,
+          attributes: ["room_id", "name", "display_type", "room_seats"],
+        },
       ],
     });
     if (schedules.length === 0)
@@ -103,37 +106,42 @@ router.put("/modifySchedule", async (req, res) => {
   }
 });
 //!-----------------------------------------------------------
+// router.put("/modifySeats", async (req, res, next) => {
+//   if (!req.body) return res.send("The form is empty");
+//   try {
+//     const { schedule_id, key, value } = req.query;
+//     const { day, time, active, movie_id, room_id } = req.body;
+//     const schedule = await Schedule.findByPk(schedule_id, {
+//       include: [
+//         {
+//           model: Room,
+//           attributes: ["room_seats"],
+//         },
+//       ],
+//     });
+//     if (schedule) {
+//       let seats = schedule.Room.room_seats;
+//       if (seats.hasOwnProperty(key)) {
+//         if (seats[key] === true) {
+//           seats[key] = value === "true";
+//         }
+//       }
+//       const seatAvailable = await schedule.update({
+//         day,
+//         time,
+//         active,
+//         movie_id,
+//         room_id,
+//       });
 
-router.put("/modifySeats/:schedule_id", async (req, res, next) => {
-  const { schedule_id } = req.params;
-  const { key } = req.query
-  if (!schedule_id) res.send("schedule_id must be sent")
-  try {
-    const schedule = await Schedule.findByPk(schedule_id, {
-      include: [{
-        model: Room,
-        attributes: ["room_seats"]
-      }]
-    });
-    //console.log(schedule.toJSON())
-    if (schedule) {
-      let seats = schedule.Room.room_seats;
-      //console.log(seats[key])
-      const updated = await schedule.update(
-        {
-          [Room.room_seats[key]]: seats[key] = !seats[key]
-        },
-        {
-          where: { schedule_id }
-        }
-      )
-      console.log(updated.toJSON())
-      res.send(updated)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
+//       console.log(seatAvailable.toJSON());
+//       return res.send(seatAvailable);
+//     }
+//     res.status(404).send("Schedule not found");
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 //!-----------------------------------------------------------
 
 router.post("/createSchedule", async (req, res) => {
@@ -171,88 +179,79 @@ router.delete("/deleteSchedule", async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 });
+//!-------------------------------------------------------------------------------------------------
+router.put("/soldSeats/:schedule_id", async (req, res, next) => {
+  const { schedule_id } = req.params;
 
-module.exports = router;
-
-
-
-
-
-
-
-/* router.put("/modifySeats/:schedule_id", async (req, res, next) => {
+  if (!req.body) res.send("The form is empty");
 
   try {
-    const { key } = req.query;
-    const { schedule_id } = req.params;
-    if (!schedule_id) res.send("The ID must be sent")
-    const schedule = await Schedule.findByPk(schedule_id, {
-      include: [
-        {
-          model: Room,
-          attributes: ["room_seats"],
-        },
-      ]
-    });
-    //console.log(schedule.Room.room_seats)
+    const { sold } = req.body;
+    const schedule = await Schedule.findByPk(schedule_id);
     if (schedule) {
-      let seats = schedule.Room.room_seats
-      //console.log(key)
-      //console.log(seats)
-      const seatUpdated = await schedule.update({
-        [Room.room_seats]: seats[key] = !seats[key]
-      }, { where: schedule_id })
-      //console.log(seatUpdated.toJSON())
+      const aux = schedule.boughtSeats;
 
-      //console.log(schedule.toJSON())
-      return res.send(seatUpdated)
-    } else {
-      res.status(404).send("Schedule not found")
-    }
-  } catch (error) {
-    next(error)
-  }
-}); */
-/* router.put("/modifySeats/:schedule_id", async (req, res, next) => {
-  if (!req.body) return res.send("The form is empty")
-  try {
-    const { schedule_id } = req.params;
-    const { key, value } = req.body;
-    //const { day, time, active, movie_id, room_id } = req.body;
-    const schedule = await Schedule.findByPk(schedule_id, {
-      include: [
-        {
-          model: Room,
-          attributes: ["room_seats"],
-        },
-      ]
-    });
-    if (schedule) {
-      let seats = schedule.Room.room_seats
-      //console.log('seats: ', seats)
-
-      //if (seats[key] === true) {
-      //seats[key] = value === 'true'
-      const updated = await schedule.set(
-
-        {
-          [Room.room_seats]: [seats[key] = !value]
-        },
-        {
-          where: {
-            schedule_id
+      function verifySeats(seats) {
+        for (let i = 0; i < seats.length; i++) {
+          if (aux.includes(seats[i])) {
+            return false;
           }
         }
+        return true;
+      }
 
-      );
-      console.log(updated.toJSON())
-      return res.send(updated)
-      //}
-
-    } else {
-      res.status(404).send("Schedule not found")
+      if (verifySeats(sold)) {
+        const soldSeats = await schedule.update({
+          boughtSeats: [...aux, ...sold],
+        });
+        return res.send(soldSeats);
+      }
+      return res.status(400).send("Seats already sold");
     }
-  } catch (error) {
-    next(error)
+  } catch (e) {
+    next(e);
   }
-}); */
+});
+
+// router.put("/soldSeats", async (req, res) => {
+//   if (!req.body) return res.send("The form is empty");
+//   try {
+//     const { schedule_id, sold } = req.body;
+
+//     const schedule = await Schedule.findByPk(schedule_id, {
+//       include: [
+//         {
+//           model: Movie,
+//           attributes: ["movie_id", "title", "poster", "display", "duration"],
+//         },
+//         {
+//           model: Room,
+//           attributes: ["room_seats", "room_id"],
+//         },
+//       ],
+//     });
+//     if (schedule) {
+//       let seats = schedule.Room.room_seats;
+//       if (sold) {
+//         sold.forEach((seat) => {
+//         if (seats.hasOwnProperty(seat)) {
+//           if (seats[seat] === true) {
+//             seats[seat] = false;
+//           }
+//         }
+//       });
+//     }
+//       const seatAvailable = await schedule.update({
+//         boughtSeats: schedule.boughtSeats ? schedule.boughtSeats.concat(sold) : sold,
+//         Room: { room_seats: seats },
+//       });
+//       console.log(seatAvailable.toJSON());
+//       return res.send(seatAvailable);
+//     }
+//     return res.status(200).send({ message: "Bought seats updated" });
+//   } catch (err) {
+//     return res.status(500).send({ message: err.message });
+//   }
+// });
+
+module.exports = router;
