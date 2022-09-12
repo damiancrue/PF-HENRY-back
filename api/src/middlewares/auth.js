@@ -2,10 +2,11 @@ const firebase = require("../firebase-config.js");
 
 //Revisa que el token del usuario este activo e informa
 const checkActiveUser = async (req, res, next) => {
-  const token = req.body.token;
+  const token = req.query.token;
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {
+      req.body.uid = decodedValue.uid;
       return next();
     }
     return res.status(410).send({ message: "Session no longer active" });

@@ -13,8 +13,14 @@ const e = require("express");
 const users = Router();
 
 //Valida que el usuario exista, o que la sesion no haya terminado
-users.get("/validateActiveUser", checkActiveUser, (req, res) => {
-  res.status(200).send({ message: "Valid user" });
+users.get("/isActive", checkActiveUser, (req, res) => {
+  const { uid } = req.body.uid;
+  try {
+    const user = User.findByPk(uid);
+    return res.status(200).send({ email: user.email, name: user.name });
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
 });
 
 //Busca a todos los usuarios, con la opcion de pasarle
@@ -35,7 +41,7 @@ users.get("/getAll", async (req, res) => {
 //Setea el flag de active en false
 users.put(
   "/banUser",
-  //getUID,  Se comenta para probar insertar datos falsos que no se pueden validar en firebase
+  getUID, //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
   async (req, res) => {
     const { uid } = req.body;
 
@@ -90,7 +96,7 @@ users.put("/unbanUser", async (req, res) => {
 //Crea un usuario en nuestra DB, asignandole un rol y la referencia al UID de firebase
 users.post(
   "/createUser",
-  //getUID,  Se comenta para probar insertar datos falsos que no se pueden validar en firebase
+  //getUID,  //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
   async (req, res) => {
     const { email, username, role, uid } = req.body;
 
@@ -113,5 +119,20 @@ users.post(
     }
   }
 );
+
+//Valida que el usuario sea admin
+users.post("/isAdmin", getUID, (req, res) => {
+  const { uid } = req.body;
+  try {
+    userRole = User.findByPk(uid);
+    if (userRole.role_id === "A") {
+      return res.status(200).send(true);
+    } else {
+      return res.status(200).send(false);
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
 
 module.exports = users;
