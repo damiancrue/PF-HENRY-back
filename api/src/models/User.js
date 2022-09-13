@@ -38,6 +38,10 @@ module.exports = (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: [],
     },
+    purchaseHistory: {
+      type: DataTypes.ARRAY(DataTypes.JSON),
+      defaultValue: []
+    }
     //!-----------------------------------------
   });
 };
