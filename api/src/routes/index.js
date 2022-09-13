@@ -24,6 +24,7 @@ const UserRouter = require("./users.js");
 const ScheduleRouter = require("./schedule.js");
 const MailRouter = require("./mail.js");
 const ClassificationRouter = require("./classification.js");
+const FavoriteMovies = require("./favoriteMovies");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
@@ -38,5 +39,6 @@ router.use("/users", UserRouter);
 router.use("/schedules", ScheduleRouter);
 router.use("/mail", MailRouter);
 router.use("/classifications", ClassificationRouter);
+router.use("/favorites", FavoriteMovies);
 
 module.exports = router;
