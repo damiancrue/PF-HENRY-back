@@ -46,27 +46,23 @@ users.get("/getAll", async (req, res) => {
 });
 
 //Setea el flag de active en false
-users.put(
-  "/banUser",
-  getUID, //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
-  async (req, res) => {
-    const { uid } = req.body;
+users.put("/banUser", async (req, res) => {
+  const { email } = req.body;
 
-    try {
-      await User.update(
-        { active: false },
-        {
-          where: {
-            user_id: uid,
-          },
-        }
-      );
-      res.status(200).send({ message: "User is now inactive" });
-    } catch (err) {
-      res.status(400).send({ message: err });
-    }
+  try {
+    await User.update(
+      { active: false },
+      {
+        where: {
+          email: email,
+        },
+      }
+    );
+    res.status(200).send({ message: "User is now inactive" });
+  } catch (err) {
+    res.status(400).send({ message: err });
   }
-);
+});
 
 users.put("/modifyRole", async (req, res) => {
   const { email, role } = req.body;
