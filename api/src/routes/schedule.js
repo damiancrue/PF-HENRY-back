@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { Schedule, Movie, Room } = require("../db.js");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const router = Router();
 const {
   getSchedulesParametersHandler,
