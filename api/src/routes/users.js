@@ -143,13 +143,13 @@ users.post("/isAdmin", getUID, async (req, res) => {
 });
 
 users.post('/createUserByAdmin', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
   if (!username || !email || !password || password === '' || email === '' || username === '')
     return res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",
     });
   try {
-    const user = await firebase.auth().createUser({
+    await firebase.auth().createUser({
       email: email,
       password: password,
       username: username
@@ -161,7 +161,7 @@ users.post('/createUserByAdmin', async (req, res) => {
           name: username,
           email: email,
           role_id: role,
-          password
+          password,
         })
         return res.send(userByAdmin)
       })
