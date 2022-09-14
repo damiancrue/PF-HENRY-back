@@ -146,8 +146,8 @@ users.post("/isAdmin", getUID, (req, res) => {
 });
 
 users.post('/createUserByAdmin', async (req, res) => {
-  const { username, email, password, role } = req.body;
-  if (!username || !email || !password || !role || role === '' || password === '' || email === '' || username === '')
+  const { username, email, password } = req.body;
+  if (!username || !email || !password || password === '' || email === '' || username === '')
     return res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",
     });
