@@ -12,7 +12,7 @@ router.post('/addFav/:user_id', async (req, res, next) => {
       const user = await User.findByPk(user_id);
       if (user) {
          const aux = user.favMovieId
-         console.log(aux)
+         //console.log(aux)
          for (let i = 0; i < aux.length; i++) {
             if (!aux.includes(fav)) return aux.push(fav)
          }

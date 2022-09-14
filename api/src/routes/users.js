@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { User, Role, Op } = require("../db.js");
 const userHelper = require("../helpers/userHelper.js");
+const firebase = require("../firebase-config.js");
 const axios = require("axios");
 require("dotenv").config();
 const {
@@ -143,5 +144,37 @@ users.post("/isAdmin", getUID, (req, res) => {
     res.status(500).send({ message: err.message });
   }
 });
+
+users.post('/createUserByAdmin', async (req, res) => {
+  const { username, email, password, role } = req.body;
+  if (!username || !email || !password || !role || role === '' || password === '' || email === '' || username === '')
+    return res.status(400).send({
+      message: "All creation fields must be sent, and they can't be empty",
+    });
+  try {
+    const user = await firebase.auth().createUser({
+      email: email,
+      password: password,
+      username: username
+    })
+      .then(async (userRecord) => {
+        const uid = userRecord.uid;
+        const userByAdmin = await User.create({
+          user_id: uid,
+          name: username,
+          email: email,
+          role_id: role,
+          password
+        })
+        return res.send(userByAdmin)
+      })
+      .catch((error) => {
+        console.log('Error creating new user:', error);
+      });
+  } catch (error) {
+    console.log("Error creating new user", error)
+    res.send({ message: error.message })
+  }
+})
 
 module.exports = users;
