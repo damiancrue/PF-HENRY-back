@@ -47,27 +47,23 @@ users.get("/getAll", async (req, res) => {
 });
 
 //Setea el flag de active en false
-users.put(
-  "/banUser",
-  getUID, //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
-  async (req, res) => {
-    const { uid } = req.body;
+users.put("/banUser", async (req, res) => {
+  const { email } = req.body;
 
-    try {
-      await User.update(
-        { active: false },
-        {
-          where: {
-            user_id: uid,
-          },
-        }
-      );
-      res.status(200).send({ message: "User is now inactive" });
-    } catch (err) {
-      res.status(400).send({ message: err });
-    }
+  try {
+    await User.update(
+      { active: false },
+      {
+        where: {
+          email: email,
+        },
+      }
+    );
+    res.status(200).send({ message: "User is now inactive" });
+  } catch (err) {
+    res.status(400).send({ message: err });
   }
-);
+});
 
 users.put("/modifyRole", async (req, res) => {
   const { email, role } = req.body;
@@ -108,7 +104,7 @@ users.post(
   async (req, res) => {
     const { email, username, role } = req.body;
     const uid = req.uid;
-    console.log(uid);
+
     if (!email || !username || email === "" || username === "")
       return res.status(400).send({
         message: "All creation fields must be sent, and they can't be empty",
@@ -119,7 +115,7 @@ users.post(
         user_id: uid,
         name: username,
         email: email,
-        role_id: role,
+        role_id: "A",
         active: true,
       });
       return res.status(201).send({ message: "User created" });
@@ -130,11 +126,12 @@ users.post(
 );
 
 //Valida que el usuario sea admin
-users.post("/isAdmin", getUID, (req, res) => {
+users.post("/isAdmin", getUID, async (req, res) => {
   const uid = req.uid;
-  console.log(uid);
+
   try {
-    userRole = User.findByPk(uid);
+    userRole = await User.findByPk(uid);
+    console.log(userRole.role_id);
     if (userRole.role_id === "A") {
       return res.status(200).send(true);
     } else {
