@@ -192,17 +192,14 @@ users.delete('/deleteUser', async (req, res, next) => {
     const user = await User.findOne({
       where: { email }
     });
-    //console.log(user)
     if (user) {
       const uid = user.user_id;
-      console.log(uid)
-      //firebase.auth().deleteUser(uid).then(async () => {
-      //const deletedUser = await User.destroy({
-      //where: { email }
-      //});
-      //return res.send(deletedUser)
-      return res.send('deletedUser')
-      //});
+      firebase.auth().deleteUser(uid).then(async () => {
+        const deletedUser = await User.destroy({
+          where: { email }
+        });
+        return res.send(deletedUser)
+      });
     } else {
       return res.status(404).send("User not found")
     }
