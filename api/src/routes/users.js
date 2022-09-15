@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { User, Role, Op } = require("../db.js");
 const userHelper = require("../helpers/userHelper.js");
+const firebase = require("../firebase-config.js");
 const axios = require("axios");
 require("dotenv").config();
 const {
@@ -9,6 +10,7 @@ const {
   getUID,
 } = require("../middlewares/auth.js");
 const e = require("express");
+const { route } = require("./favoriteMovies.js");
 
 const users = Router();
 
@@ -46,27 +48,23 @@ users.get("/getAll", async (req, res) => {
 });
 
 //Setea el flag de active en false
-users.put(
-  "/banUser",
-  getUID, //Se comenta para probar insertar datos falsos que no se pueden validar en firebase
-  async (req, res) => {
-    const { uid } = req.body;
+users.put("/banUser", async (req, res) => {
+  const { email } = req.body;
 
-    try {
-      await User.update(
-        { active: false },
-        {
-          where: {
-            user_id: uid,
-          },
-        }
-      );
-      res.status(200).send({ message: "User is now inactive" });
-    } catch (err) {
-      res.status(400).send({ message: err });
-    }
+  try {
+    await User.update(
+      { active: false },
+      {
+        where: {
+          email: email,
+        },
+      }
+    );
+    res.status(200).send({ message: "User is now inactive" });
+  } catch (err) {
+    res.status(400).send({ message: err });
   }
-);
+});
 
 users.put("/modifyRole", async (req, res) => {
   const { email, role } = req.body;
@@ -144,5 +142,71 @@ users.post("/isAdmin", getUID, async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 });
+
+users.post('/createUserByAdmin', async (req, res) => {
+  const { username, email, password, role } = req.body;
+  if (!username || !email || !password || password === '' || email === '' || username === '')
+    return res.status(400).send({
+      message: "All creation fields must be sent, and they can't be empty",
+    });
+  try {
+    await firebase.auth().createUser({
+      email: email,
+      password: password,
+      username: username
+    })
+      .then(async (userRecord) => {
+        const uid = userRecord.uid;
+        const userByAdmin = await User.create({
+          user_id: uid,
+          name: username,
+          email: email,
+          role_id: role,
+          password,
+        })
+        return res.send(userByAdmin)
+      })
+      .catch((error) => {
+        console.log('Error creating new user:', error);
+      });
+  } catch (error) {
+    console.log("Error creating new user", error)
+    res.send({ message: error.message })
+  }
+});
+
+/* users.post('/passwordReset', async(req, res, next)=>{
+  const {email, password}= req.body;
+  if(!email || !password) return res.send("All data must be sent");
+  try {
+    const updatePass= firebase.auth().generatePasswordResetLink()
+  } catch (error) {
+    
+  }
+}); */
+
+users.delete('/deleteUser', async (req, res, next) => {
+  const { email } = req.body;
+  if (!email) return res.send("Email must be sent")
+  try {
+    const user = await User.findOne({
+      where: { email }
+    });
+    if (user) {
+      const uid = user.user_id;
+      firebase.auth().deleteUser(uid).then(async () => {
+        const deletedUser = await User.destroy({
+          where: { email }
+        });
+        return res.send(deletedUser)
+      });
+    } else {
+      return res.status(404).send("User not found")
+    }
+  } catch (error) {
+    res.send({ message: error.message })
+  }
+})
+
 
 module.exports = users;

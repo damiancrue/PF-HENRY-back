@@ -33,5 +33,15 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       default: true,
     },
+    //!-----------------------------------------
+    favMovieId: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: [],
+    },
+    purchaseHistory: {
+      type: DataTypes.ARRAY(DataTypes.JSON),
+      defaultValue: []
+    }
+    //!-----------------------------------------
   });
 };
