@@ -13,7 +13,6 @@ router.post('/addFav/:user_id', async (req, res, next) => {
       if (user) {
          const aux = user.favMovieId
          if (!aux.includes(movie_id)) aux.push(movie_id)
-         console.log(aux)
          const favMovie = await user.update(
             { favMovieId: aux },
             { where: { user_id } }
@@ -44,11 +43,11 @@ router.get('/getFav/:user_id', async (req, res, next) => {
 
 router.delete("/deleteFav/:user_id", async (req, res, next) => {
    const { user_id } = req.params;
-   const { fav } = req.body;
+   const { movie_id } = req.body;
    try {
       const user = await User.findByPk(user_id)
       if (!user_id) return res.send("user_id must be sent");
-      const aux = user.favMovieId.filter(e => e !== fav)
+      const aux = user.favMovieId.filter(e => e !== movie_id)
       const favMovie = await user.update(
          { favMovieId: aux },
          { where: { user_id } }
