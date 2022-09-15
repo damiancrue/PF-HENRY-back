@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { Router } = require("express");
 const { Rating, Movie, User } = require("../db.js");
 const router = Router();
