@@ -41,6 +41,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 const {
   User,
   Movie,
+  ShoppingCart,
   //Detail,
   //Display,
   //Genre,
@@ -77,6 +78,11 @@ ScheduleDetail.belongsTo(Schedule, { foreignKey: "schedule_id" });
 Schedule.hasMany(Schedule, { foreignKey: "schedule_id" });
 Schedule.belongsTo(Room, { foreignKey: "room_id" });
 Room.hasMany(Schedule, { foreignKey: "room_id" });
+
+User.hasOne(ShoppingCart, { foreignKey: "user_id" });
+ShoppingCart.belongsTo(User, { foreignKey: "user_id" });
+// Product.hasMany(ShoppingCart, { foreignKey: "product_id" });
+// ShoppingCart.belongsTo(Product, { foreignKey: "product_id" });
 
 //Relaciones viejas pero no tanto
 // User.hasMany(Rating, { foreignKey: "user_id" });
