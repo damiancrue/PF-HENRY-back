@@ -105,4 +105,34 @@ router.post("/register/response", (req, res) => {
   }
 });
 
+router.post("/review/response", (req, res) => {
+  if (!req.body) res.status(400).send("No body provided");
+
+  try {
+    const { email } = req.body;
+
+    const responseMail = `Hello!\nYour review has been created successfully.\nGreetings.`;
+
+    const detailsResponse = {
+      from: ADMIN_MAIL,
+      to: email,
+      subject: "Review created",
+      text: responseMail,
+    };
+
+    transporter.sendMail(detailsResponse, (err, info) => {
+      if (err) {
+        res.status(500).send(err.message);
+      } else {
+        console.log(info.envelope);
+        console.log(info.response);
+        res.status(200).json(req.body);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;

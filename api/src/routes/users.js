@@ -10,6 +10,7 @@ const {
   getUID,
 } = require("../middlewares/auth.js");
 const e = require("express");
+const { route } = require("./favoriteMovies.js");
 
 const users = Router();
 
@@ -172,6 +173,40 @@ users.post('/createUserByAdmin', async (req, res) => {
     console.log("Error creating new user", error)
     res.send({ message: error.message })
   }
+});
+
+/* users.post('/passwordReset', async(req, res, next)=>{
+  const {email, password}= req.body;
+  if(!email || !password) return res.send("All data must be sent");
+  try {
+    const updatePass= firebase.auth().generatePasswordResetLink()
+  } catch (error) {
+    
+  }
+}); */
+
+users.delete('/deleteUser', async (req, res, next) => {
+  const { email } = req.body;
+  if (!email) return res.send("Email must be sent")
+  try {
+    const user = await User.findOne({
+      where: { email }
+    });
+    if (user) {
+      const uid = user.user_id;
+      firebase.auth().deleteUser(uid).then(async () => {
+        const deletedUser = await User.destroy({
+          where: { email }
+        });
+        return res.send(deletedUser)
+      });
+    } else {
+      return res.status(404).send("User not found")
+    }
+  } catch (error) {
+    res.send({ message: error.message })
+  }
 })
+
 
 module.exports = users;
