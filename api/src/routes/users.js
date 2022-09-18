@@ -175,16 +175,6 @@ users.post('/createUserByAdmin', async (req, res) => {
   }
 });
 
-/* users.post('/passwordReset', async(req, res, next)=>{
-  const {email, password}= req.body;
-  if(!email || !password) return res.send("All data must be sent");
-  try {
-    const updatePass= firebase.auth().generatePasswordResetLink()
-  } catch (error) {
-    
-  }
-}); */
-
 users.delete('/deleteUser', async (req, res, next) => {
   const { email } = req.body;
   if (!email) return res.send("Email must be sent")
@@ -206,7 +196,37 @@ users.delete('/deleteUser', async (req, res, next) => {
   } catch (error) {
     res.send({ message: error.message })
   }
-})
+});
 
+users.post('/passwordReset', async (req, res, next) => {
+  const { email } = req.body;
+  if (!email) return res.send("Email must be sent");
+  try {
+    const linkReset = await firebase.auth().generatePasswordResetLink(email);
+    console.log(linkReset)
+    res.send(linkReset)
+  } catch (error) {
+    next(error)
+  }
+});
+
+users.put('/passwordChange', async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.send("All data must be sent");
+  try {
+    const user = await User.findOne({
+      where: { email }
+    });
+    if (user) {
+      const uid = user.user_id;
+      const newPassword = await firebase.auth().updateUser(uid, {
+        password: password
+      });
+      return res.send(newPassword)
+    } return res.status(404).send("User not found")
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = users;
