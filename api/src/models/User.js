@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
     },
     active: {
       type: DataTypes.BOOLEAN,
-      default: true,
+      defaultValue: true,
     },
     //!-----------------------------------------
     favMovieId: {
