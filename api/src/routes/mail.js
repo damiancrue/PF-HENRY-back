@@ -135,4 +135,43 @@ router.post("/review/response", (req, res) => {
   }
 });
 
+router.post("/purchase/response", (req, res) => {
+  if (!req.body) res.status(400).send("No body provided");
+
+  try {
+    const { email, name, purchase_id } = req.body;
+
+    const purchaseCode = parseInt(purchase_id) + 2000;
+
+    const responseMail = `Hello! ${name}\nYour purchase has been made successfully. Your purchase confirmation code is: ${purchaseCode}\n
+    \nHere are some rules that we would like you to keep in mind when you go to see the film:
+    \n1-Only occupy the seats you have assigned. Try to access your seat disturbing as little as possible.
+    \n2-Keep your phone off or on silent. Don't take pictures with flash.
+    \n3-Make as little noise as possible so as not to interfere with other people who are also enjoying the movie.
+    \n4-At the end of the function, please deposit the garbage in the containers designated for that purpose.\n
+    \nWe hope you enjoy the feature. Thank you for choosing us.
+    \nGreetings.`;
+
+    const detailsResponse = {
+      from: ADMIN_MAIL,
+      to: email,
+      subject: "Purchase confirmation",
+      text: responseMail,
+    };
+
+    transporter.sendMail(detailsResponse, (err, info) => {
+      if (err) {
+        res.status(500).send(err.message);
+      } else {
+        console.log(info.envelope);
+        console.log(info.response);
+        res.status(200).json(req.body);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;

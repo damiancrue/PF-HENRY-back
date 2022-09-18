@@ -167,8 +167,8 @@ router.post("/createSchedule", async (req, res) => {
   }
 });
 
-router.delete("/deleteSchedule", async (req, res) => {
-  const { schedule_id } = req.body;
+router.delete("/deleteSchedule/:schedule_id", async (req, res) => {
+  const { schedule_id } = req.params;
   try {
     await Schedule.update(
       { active: false },
