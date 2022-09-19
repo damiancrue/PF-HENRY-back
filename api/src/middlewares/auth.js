@@ -44,11 +44,15 @@ const checkValidUser = async (req, res, next) => {
 
 const getUID = async (req, res, next) => {
   const token = req.body.token;
-
+  console.log(token);
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {
+      console.log("decoded value");
+      console.log(decodedValue);
       const uid = decodedValue.uid;
+      console.log("uid");
+      console.log(uid);
       req.uid = uid;
       next();
     } else {
@@ -57,7 +61,7 @@ const getUID = async (req, res, next) => {
         .send({ message: "Invalid user or session no longer active" });
     }
   } catch (err) {
-    return res.status(404).send({ message: "Internal server error" });
+    return res.status(404).send({ message: err });
   }
 };
 
