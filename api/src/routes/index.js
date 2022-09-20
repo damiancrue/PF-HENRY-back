@@ -26,6 +26,7 @@ const MailRouter = require("./mail.js");
 const ClassificationRouter = require("./classification.js");
 const FavoriteMovies = require("./favoriteMovies");
 const Payment = require("./payment.js");
+const PurchaseHistoryRouter = require("./purchaseHistory.js");
 
 router.use("/movies", MovieRouter);
 router.use("/ratings", RatingRouter);
@@ -42,5 +43,6 @@ router.use("/mail", MailRouter);
 router.use("/classifications", ClassificationRouter);
 router.use("/favorites", FavoriteMovies);
 router.use("/payment", Payment);
+router.use("/history", PurchaseHistoryRouter);
 
 module.exports = router;

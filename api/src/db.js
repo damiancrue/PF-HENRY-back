@@ -55,6 +55,7 @@ const {
   Schedule,
   //BoughtSeats,
   //Role,
+  PurchaseHistory,
 } = sequelize.models;
 
 //Relaciones nuevas
