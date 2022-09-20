@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
       },
     },
     seat_numbers: {
-      type: DataTypes.JSON,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     price: {
