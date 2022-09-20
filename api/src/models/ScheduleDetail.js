@@ -27,5 +27,8 @@ module.exports = (sequelize) => {
       type: DataTypes.JSON,
       allowNull: false,
     },
+    price: {
+      type: DataTypes.FLOAT(2),
+    },
   });
 };

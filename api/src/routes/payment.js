@@ -11,26 +11,54 @@ mercadopago.configure({
   access_token: ACCESS_TOKEN,
 });
 
-payment.get("/", async (req, res, next) => {
+payment.post("/", async (req, res, next) => {
+  //const {products, schedule} = req.body;
   const latest_id = await Purchase.findAll({
     limit: 1,
     order: [["purchase_id", "DESC"]],
   });
   const purchase_id = latest_id.length === 0 ? 1 : latest_id[0] + 1;
-  const id_orden = 1;
-  const carrito = [
-    { title: "Producto 1", quantity: 5, price: 10.5 },
-    { title: "Producto 2", quantity: 10, price: 9.5 },
-    { title: "Producto 3", quantity: 8, price: 12.5 },
+
+  //*******************Test data*******************
+  const products = [
+    { product_id: 4, name: "Coca Cola 750cc", quantity: 50, price: 3 },
+    { product_id: 5, name: "Sprite 750cc", quantity: 30, price: 2.5 },
+    { product_id: 3, name: "Hot Dog", quantity: 5, price: 1.5 },
   ];
-  const items_ml = carrito.map((item) => ({
-    title: item.title,
-    unit_price: item.price,
-    quantity: item.quantity,
+  const schedule = {
+    schedule_id: 1,
+    seats: ["A01", "A02"],
+    title: "Beast",
+    display: "2D",
+    day: "2022-09-04",
+    price: 10.5,
+  };
+  const mp_items = products.map((product) => ({
+    title: product.name,
+    quantity: product.quantity,
+    unit_price: product.price,
   }));
-  let preference = {
-    items: items_ml,
-    external_reference: `${id_orden}`,
+  mp_items.push({
+    title: schedule.title,
+    quantity: schedule.seats.length,
+    unit_price: schedule.price,
+  });
+  //Creo la compra en "Started"
+  let individualProductTotal = products.map(
+    (product) => product.quantity * product.price
+  );
+  const user_id = "1234567";
+  let purchaseTotal = 0;
+  individualProductTotal.forEach((amount) => (purchaseTotal += amount));
+  purchaseTotal += schedule.price;
+  const newPurchase = await Purchase.create({
+    amount: purchaseTotal,
+    status: "created",
+    user_id,
+  });
+  let mpPreference = {
+    items: mp_items,
+    external_reference: newPurchase.purchase_id.toString(),
     payment_methods: {
       excluded_payment_types: [
         {
@@ -46,7 +74,7 @@ payment.get("/", async (req, res, next) => {
     },
   };
   mercadopago.preferences
-    .create(preference)
+    .create(mpPreference)
     .then((response) => {
       console.log("respondio");
       global.id = response.body.id;
@@ -57,6 +85,47 @@ payment.get("/", async (req, res, next) => {
       console.log(err);
       return res.status(400).send(err);
     });
+  //*******************End*******************
+  //return res.status(200).send(newPurchase);
+  // const carrito = [
+  //   { title: "Producto 1", quantity: 5, price: 10.5 },
+  //   { title: "Producto 2", quantity: 10, price: 9.5 },
+  //   { title: "Producto 3", quantity: 8, price: 12.5 },
+  // ];
+  // const items_ml = carrito.map((item) => ({
+  //   title: item.title,
+  //   unit_price: item.price,
+  //   quantity: item.quantity,
+  // }));
+  // let preference = {
+  //   items: items_ml,
+  //   external_reference: `${id_orden}`,
+  //   payment_methods: {
+  //     excluded_payment_types: [
+  //       {
+  //         id: "atm",
+  //       },
+  //     ],
+  //     installments: 3,
+  //   },
+  //   back_urls: {
+  //     success: "http://localhost:3000/cinema",
+  //     failure: "http://localhost:3000/cinema/login",
+  //     pending: "http://localhost:3000/cinema/register",
+  //   },
+  // };
+  // mercadopago.preferences
+  //   .create(preference)
+  //   .then((response) => {
+  //     console.log("respondio");
+  //     global.id = response.body.id;
+  //     console.log(response.body);
+  //     return res.status(200).send({ id: global.id });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     return res.status(400).send(err);
+  //   });
 });
 
 payment.get("/pagos", (req, res) => {
@@ -66,6 +135,7 @@ payment.get("/pagos", (req, res) => {
   const external_reference = req.query.external_reference;
   const merchant_order_id = req.query.merchant_order_id;
   console.log("EXTERNAL REFERENCE ", external_reference);
+  return res.redirect("http://localhost:3000/cinema");
 });
 
 payment.get("/pagos/:id", (req, res) => {
