@@ -138,9 +138,9 @@ payment.post("/", getUID, async (req, res, next) => {
         installments: 3,
       },
       back_urls: {
-        success: "http://localhost:3000/cinema/payment/success",
-        failure: "http://localhost:3000/cinema/payment/fail",
-        pending: "http://localhost:3000//cinema/payment/pending",
+        success: "http://localhost:3000/payment/followUp",
+        failure: "http://localhost:3000/payment/followUp",
+        pending: "http://localhost:3000//payment/followUp",
       },
     };
     mercadopago.preferences
@@ -160,13 +160,24 @@ payment.post("/", getUID, async (req, res, next) => {
   }
 });
 
-payment.get("/pagos", (req, res) => {
+payment.get("/followUp", async (req, res) => {
   console.info("EN LA RUTA DE PAGOS ", req);
   const payment_id = req.query.payment_id;
   const payment_status = req.query.status;
   const external_reference = req.query.external_reference;
   const merchant_order_id = req.query.merchant_order_id;
+  console.log(payment_status);
   console.log("EXTERNAL REFERENCE ", external_reference);
+  const editPurchase = await Purchase.update(
+    { status: "completed" },
+    {
+      where: {
+        purchase_id: {
+          [Op.eq]: external_reference,
+        },
+      },
+    }
+  );
   return res.redirect("http://localhost:3000/cinema");
 });
 
