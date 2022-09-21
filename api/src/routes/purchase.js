@@ -80,8 +80,8 @@ router.get("/history", async (req, res) => {
           .status(400)
           .send({ message: "The selected email does not belong to a user" });
       //let role = user[0].role_id;
-      let role = "B";
-      if (user[0].role_id === role) {
+      let adminRole = "A";
+      if (user[0].role_id === adminRole) {
         const userPurchases = await Purchase.findAll({
           include: [
             {
