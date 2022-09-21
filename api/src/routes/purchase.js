@@ -9,6 +9,7 @@ const {
   ScheduleDetail,
   Product,
   Schedule,
+  Room,
 } = require("../db");
 
 router.post("/create", async (req, res, next) => {
@@ -67,30 +68,48 @@ router.get("/", async (req, res, next) => {
 router.get("/history", async (req, res) => {
   const { email } = req.query;
   try {
-    const user = await User.findAll({
-      where: {
-        email: {
-          [Op.eq]: email,
-        },
-      },
-    });
-    const userRole = user[0].role_id;
-    const userID = user[0].user_id;
+    // const user = await User.findAll({
+    //   where: {
+    //     email: {
+    //       [Op.eq]: email,
+    //     },
+    //   },
+    // });
+    // const userRole = user[0].role_id;
+    // const userID = user[0].user_id;
     const userPurchases = await Purchase.findAll({
       include: [
         {
           model: ProductDetail,
-          include: [Product],
+          attributes: ["product_quantity", "price", "product_id"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name", "image"],
+            },
+          ],
         },
         {
           model: ScheduleDetail,
-          include: [Schedule],
+          attributes: ["schedule_quantity", "seat_numbers", "price"],
+          include: [
+            {
+              model: Schedule,
+              attributes: ["day", "time", "price"],
+              include: [
+                {
+                  model: Room,
+                  attributes: ["name"],
+                },
+              ],
+            },
+          ],
         },
       ],
     });
     return res.status(200).send(userPurchases);
   } catch (err) {
-    return res.status(500).send({ message: err });
+    return res.status(500).send(err);
   }
 });
 
