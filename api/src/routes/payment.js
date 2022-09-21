@@ -159,7 +159,7 @@ payment.post("/", getUID, async (req, res, next) => {
     return res.status(500).send({ message: err });
   }
 });
-
+//comment
 payment.get("/followUp", async (req, res) => {
   console.info("EN LA RUTA DE PAGOS ", req);
   const payment_id = req.query.payment_id;
