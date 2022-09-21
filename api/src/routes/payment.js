@@ -178,7 +178,7 @@ payment.get("/followUp", async (req, res) => {
       },
     }
   );
-  return res.redirect("https://api-pf-cine.herokuapp.com/cinema");
+  return res.redirect("https://estudioda.ar/cinema/cinema");
 });
 
 payment.get("/pagos/:id", (req, res) => {

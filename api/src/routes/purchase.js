@@ -68,46 +68,102 @@ router.get("/", async (req, res, next) => {
 router.get("/history", async (req, res) => {
   const { email } = req.query;
   try {
-    // const user = await User.findAll({
-    //   where: {
-    //     email: {
-    //       [Op.eq]: email,
-    //     },
-    //   },
-    // });
-    // const userRole = user[0].role_id;
-    // const userID = user[0].user_id;
-    const userPurchases = await Purchase.findAll({
-      include: [
-        {
-          model: ProductDetail,
-          attributes: ["product_quantity", "price", "product_id"],
-          include: [
-            {
-              model: Product,
-              attributes: ["name", "image"],
-            },
-          ],
+    console.log(email);
+    if (email) {
+      const user = await User.findAll({
+        where: {
+          email: email,
         },
-        {
-          model: ScheduleDetail,
-          attributes: ["schedule_quantity", "seat_numbers", "price"],
+      });
+      if (user.length === 0)
+        return res
+          .status(400)
+          .send({ message: "The selected email does not belong to a user" });
+      //let role = user[0].role_id;
+      let role = "B";
+      if (user[0].role_id === role) {
+        const userPurchases = await Purchase.findAll({
           include: [
             {
-              model: Schedule,
-              attributes: ["day", "time", "price", "movie_id"],
+              model: ProductDetail,
+              attributes: ["product_quantity", "price", "product_id"],
               include: [
                 {
-                  model: Room,
-                  attributes: ["name"],
+                  model: Product,
+                  attributes: ["name", "image"],
+                },
+              ],
+            },
+            {
+              model: ScheduleDetail,
+              attributes: ["schedule_quantity", "seat_numbers", "price"],
+              include: [
+                {
+                  model: Schedule,
+                  attributes: ["day", "time", "price", "movie_id"],
+                  include: [
+                    {
+                      model: Room,
+                      attributes: ["name"],
+                    },
+                  ],
                 },
               ],
             },
           ],
-        },
-      ],
-    });
-    return res.status(200).send(userPurchases);
+        });
+        return res.status(200).send(userPurchases);
+      } else {
+        const uid = await User.findAll({
+          where: {
+            email: email,
+          },
+          attributes: ["user_id"],
+        });
+
+        const userPurchases = await Purchase.findAll({
+          where: {
+            user_id: uid[0].user_id,
+          },
+          include: [
+            {
+              model: ProductDetail,
+              attributes: ["product_quantity", "price", "product_id"],
+              include: [
+                {
+                  model: Product,
+                  attributes: ["name", "image"],
+                },
+              ],
+            },
+            {
+              model: ScheduleDetail,
+              attributes: ["schedule_quantity", "seat_numbers", "price"],
+              include: [
+                {
+                  model: Schedule,
+                  attributes: ["day", "time", "price", "movie_id"],
+                  include: [
+                    {
+                      model: Room,
+                      attributes: ["name"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+        return res.status(200).send(userPurchases);
+      }
+
+      // console.log("de la query");
+      // console.log(user);
+      // const userRole = user[0]?.role_id;
+      // console.log("userRole");
+      // console.log(userRole);
+      // const userID = user[0]?.user_id;
+    }
   } catch (err) {
     return res.status(500).send(err);
   }
