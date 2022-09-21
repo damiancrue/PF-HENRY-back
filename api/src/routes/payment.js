@@ -138,9 +138,9 @@ payment.post("/", getUID, async (req, res, next) => {
         installments: 3,
       },
       back_urls: {
-        success: "http://localhost:3000/payment/followUp",
-        failure: "http://localhost:3000/payment/followUp",
-        pending: "http://localhost:3000//payment/followUp",
+        success: "https://api-pf-cine.herokuapp.com/payment/followUp",
+        failure: "https://api-pf-cine.herokuapp.com/payment/followUp",
+        pending: "https://api-pf-cine.herokuapp.com/payment/followUp",
       },
     };
     mercadopago.preferences
@@ -159,7 +159,7 @@ payment.post("/", getUID, async (req, res, next) => {
     return res.status(500).send({ message: err });
   }
 });
-
+//comment
 payment.get("/followUp", async (req, res) => {
   console.info("EN LA RUTA DE PAGOS ", req);
   const payment_id = req.query.payment_id;
@@ -178,7 +178,7 @@ payment.get("/followUp", async (req, res) => {
       },
     }
   );
-  return res.redirect("http://localhost:3000/cinema");
+  return res.redirect("https://api-pf-cine.herokuapp.com/cinema");
 });
 
 payment.get("/pagos/:id", (req, res) => {
