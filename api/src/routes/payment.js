@@ -178,7 +178,7 @@ payment.get("/followUp", async (req, res) => {
       },
     }
   );
-  return res.redirect("http://localhost:3000/cinema");
+  return res.redirect("https://api-pf-cine.herokuapp.com/cinema");
 });
 
 payment.get("/pagos/:id", (req, res) => {
