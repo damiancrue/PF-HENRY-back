@@ -23,5 +23,8 @@ module.exports = (sequelize) => {
         isInt: true,
       },
     },
+    price: {
+      type: DataTypes.FLOAT(2),
+    },
   });
 };
