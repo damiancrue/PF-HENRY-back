@@ -14,137 +14,132 @@ const { ACCESS_TOKEN } = process.env;
 const { getUID } = require("../middlewares/auth.js");
 
 const payment = Router();
-//payment.use(cors());
+payment.use(cors());
 mercadopago.configure({
-  access_token: ACCESS_TOKEN,
+  access_token:
+    "TEST-1214494694070955-092102-c0d9f1f1db2286651a5d006d76c61c1b-183278328",
 });
 
 payment.post("/", getUID, async (req, res, next) => {
   const { productsBuy, scheduleId } = req.body;
   const uid = req.uid;
   try {
-    const mp_items = productsBuy.map((product) => ({
-      id: product.id,
-      title: product.name,
-      unit_price: product.price,
-      quantity: product.quantity,
-      currency_id: "USD",
-    }));
-    mp_items.push({
-      id: scheduleId.schedule_id,
-      title: scheduleId.movie,
-      unit_price: scheduleId.selected.length * 5,
-      quantity: scheduleId.selected.length,
-      currency_id: "USD",
-    });
+    // const mp_items = productsBuy.map((product) => ({
+    //   title: product.name,
+    //   unit_price: product.price,
+    //   quantity: product.quantity,
+    // }));
+    // mp_items.push({
+    //   title: "peliculita",
+    //   unit_price: scheduleId.selected.length * 5,
+    //   quantity: scheduleId.selected.length,
+    // });
+    const mp_items = [{ title: "triste", quantity: 5, unit_price: 100.5 }];
+
     //Consigue el total de la compra
-    const productsTotalAmount = productsBuy.map(
-      (product) => product.quantity * product.price
-    );
-    let purchaseTotalAmount = 0;
-    productsTotalAmount.forEach((amount) => {
-      purchaseTotalAmount += amount;
-    });
+    // const productsTotalAmount = productsBuy.map(
+    //   (product) => product.quantity * product.price
+    // );
+    // let purchaseTotalAmount = 0;
+    // productsTotalAmount.forEach((amount) => {
+    //   purchaseTotalAmount += amount;
+    // });
 
-    //Crea la compra en status 'created'
-    const newPurchase = await Purchase.create({
-      amount: purchaseTotalAmount,
-      status: "created",
-      user_id: uid,
-    });
+    // //Crea la compra en status 'created'
+    // const newPurchase = await Purchase.create({
+    //   amount: purchaseTotalAmount,
+    //   status: "created",
+    //   user_id: uid,
+    // });
 
-    //Recupera los asientos ocupados
-    const scheduleData = await Schedule.findByPk(scheduleId.schedule_id, {
-      attributes: ["boughtSeats"],
-    });
+    // //Recupera los asientos ocupados
+    // const scheduleData = await Schedule.findByPk(scheduleId.schedule_id, {
+    //   attributes: ["boughtSeats"],
+    // });
 
-    //Extrae la data de asientos ocupados, agrega los asientos seleccionados al usuario, y modifica el schedule
-    const scheduleBoughtSeats = [...scheduleData.dataValues.boughtSeats];
-    scheduleId.selected.forEach((seat) => scheduleBoughtSeats.push(seat));
-    const scheduleSeatsMod = await Schedule.update(
-      { boughtSeats: scheduleBoughtSeats },
-      {
-        where: {
-          schedule_id: scheduleId.schedule_id,
-        },
-      }
-    );
+    // //Extrae la data de asientos ocupados, agrega los asientos seleccionados al usuario, y modifica el schedule
+    // const scheduleBoughtSeats = [...scheduleData.dataValues.boughtSeats];
+    // scheduleId.selected.forEach((seat) => scheduleBoughtSeats.push(seat));
+    // const scheduleSeatsMod = await Schedule.update(
+    //   { boughtSeats: scheduleBoughtSeats },
+    //   {
+    //     where: {
+    //       schedule_id: scheduleId.schedule_id,
+    //     },
+    //   }
+    // );
 
-    //Crea los detalles de compra de los productos
-    let newProductDetails = [];
-    productsBuy.forEach(async (product) => {
-      const insertProductDetail = await ProductDetail.create({
-        product_quantity: product.quantity,
-        price: product.price,
-        purchase_id: newPurchase.purchase_id,
-        product_id: product.id,
-      });
-    });
+    // //Crea los detalles de compra de los productos
+    // let newProductDetails = [];
+    // productsBuy.forEach(async (product) => {
+    //   const insertProductDetail = await ProductDetail.create({
+    //     product_quantity: product.quantity,
+    //     price: product.price,
+    //     purchase_id: newPurchase.purchase_id,
+    //     product_id: product.id,
+    //   });
+    // });
 
-    //Crea el detalle de compra de funcion
-    let newScheduleDetail = await ScheduleDetail.create({
-      schedule_quantity: scheduleId.selected.length,
-      seat_numbers: scheduleId.selected,
-      price: 10,
-      purchase_id: newPurchase.purchase_id,
-      schedule_id: scheduleId.schedule_id,
-    });
+    // //Crea el detalle de compra de funcion
+    // let newScheduleDetail = await ScheduleDetail.create({
+    //   schedule_quantity: scheduleId.selected.length,
+    //   seat_numbers: scheduleId.selected,
+    //   price: 10,
+    //   purchase_id: newPurchase.purchase_id,
+    //   schedule_id: scheduleId.schedule_id,
+    // });
 
-    //Actualiza stock
-    const extractedIDs = productsBuy.map((product) => product.id);
-    const stocks = await Product.findAll({
-      where: {
-        product_id: {
-          [Op.in]: extractedIDs,
-        },
-      },
-      attributes: ["product_id", "stock"],
-    });
-    const extractedStocks = stocks.map((stockItem) => {
-      const relatedProduct = productsBuy.filter(
-        (product) => product.id === stockItem.dataValues.product_id
-      );
-      return {
-        stock: stockItem.dataValues.stock,
-        id: stockItem.dataValues.product_id,
-        user_selected_product: relatedProduct[0].quantity,
-      };
-    });
-    extractedStocks.forEach(async (product) => {
-      await Product.update(
-        {
-          stock: product.stock - product.user_selected_product,
-        },
-        {
-          where: {
-            product_id: {
-              [Op.eq]: product.id,
-            },
-          },
-        }
-      );
-    });
+    // //Actualiza stock
+    // const extractedIDs = productsBuy.map((product) => product.id);
+    // const stocks = await Product.findAll({
+    //   where: {
+    //     product_id: {
+    //       [Op.in]: extractedIDs,
+    //     },
+    //   },
+    //   attributes: ["product_id", "stock"],
+    // });
+    // const extractedStocks = stocks.map((stockItem) => {
+    //   const relatedProduct = productsBuy.filter(
+    //     (product) => product.id === stockItem.dataValues.product_id
+    //   );
+    //   return {
+    //     stock: stockItem.dataValues.stock,
+    //     id: stockItem.dataValues.product_id,
+    //     user_selected_product: relatedProduct[0].quantity,
+    //   };
+    // });
+    // extractedStocks.forEach(async (product) => {
+    //   await Product.update(
+    //     {
+    //       stock: product.stock - product.user_selected_product,
+    //     },
+    //     {
+    //       where: {
+    //         product_id: {
+    //           [Op.eq]: product.id,
+    //         },
+    //       },
+    //     }
+    //   );
+    // });
 
     //Realiza la configuracion de todo lo de mercadopago
-    let mpPreference = {
+    let preference = {
       items: mp_items,
-      external_reference: newPurchase.purchase_id.toString(),
+      external_reference: "1",
       payment_methods: {
-        excluded_payment_types: [
-          {
-            id: "atm",
-          },
-        ],
+        excluded_payment_types: [{ id: "atm" }],
         installments: 3,
       },
       back_urls: {
-        success: "http://localhost:3000/payment/followUp",
-        failure: "http://localhost:3000/payment/followUp",
-        pending: "http://localhost:3000//payment/followUp",
+        success: "http://localhost:3001/payment/followUp",
+        failure: "http://localhost:3001/payment/followUp",
+        pending: "http://localhost:3001//payment/followUp",
       },
     };
     mercadopago.preferences
-      .create(mpPreference)
+      .create(preference)
       .then((response) => {
         console.log("respondio");
         global.id = response.body.id;
@@ -155,7 +150,7 @@ payment.post("/", getUID, async (req, res, next) => {
         console.log(err);
         return res.status(400).send(err);
       });
-    return res.status(201).send(newPurchase);
+    //return res.status(201).send(newPurchase.id);
   } catch (err) {
     return res.status(500).send({ message: err });
   }
@@ -169,16 +164,16 @@ payment.get("/followUp", async (req, res) => {
   const merchant_order_id = req.query.merchant_order_id;
   console.log(payment_status);
   console.log("EXTERNAL REFERENCE ", external_reference);
-  const editPurchase = await Purchase.update(
-    { status: "completed" },
-    {
-      where: {
-        purchase_id: {
-          [Op.eq]: external_reference,
-        },
-      },
-    }
-  );
+  // const editPurchase = await Purchase.update(
+  //   { status: "completed" },
+  //   {
+  //     where: {
+  //       purchase_id: {
+  //         [Op.eq]: external_reference,
+  //       },
+  //     },
+  //   }
+  // );
   return res.redirect("http://localhost:3000/cinema");
 });
 
