@@ -95,7 +95,7 @@ router.get("/history", async (req, res) => {
           include: [
             {
               model: Schedule,
-              attributes: ["day", "time", "price"],
+              attributes: ["day", "time", "price", "movie_id"],
               include: [
                 {
                   model: Room,
