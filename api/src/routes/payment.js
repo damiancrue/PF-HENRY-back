@@ -138,9 +138,9 @@ payment.post("/", getUID, async (req, res, next) => {
         installments: 3,
       },
       back_urls: {
-        success: "http://localhost:3000/payment/followUp",
-        failure: "http://localhost:3000/payment/followUp",
-        pending: "http://localhost:3000//payment/followUp",
+        success: "https://api-pf-cine.herokuapp.com/payment/followUp",
+        failure: "https://api-pf-cine.herokuapp.com/payment/followUp",
+        pending: "https://api-pf-cine.herokuapp.com/payment/followUp",
       },
     };
     mercadopago.preferences
@@ -155,7 +155,6 @@ payment.post("/", getUID, async (req, res, next) => {
         console.log(err);
         return res.status(400).send(err);
       });
-    return res.status(201).send(newPurchase);
   } catch (err) {
     return res.status(500).send({ message: err });
   }
