@@ -155,6 +155,7 @@ payment.post("/", getUID, async (req, res, next) => {
         console.log(err);
         return res.status(400).send(err);
       });
+    return res.status(201).send(newPurchase);
   } catch (err) {
     return res.status(500).send({ message: err });
   }
