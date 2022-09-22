@@ -180,19 +180,30 @@ router.get("/history", async (req, res) => {
 
 router.put("/update/:purchase_id", async (req, res, next) => {
   const { purchase_id } = req.params;
-  const { amount, movie_id, user_id } = req.body;
+  const { amount, movie_id, user_id, status } = req.body;
   if (!req.body) return "The form is empty";
   try {
+    let purchaseInfo = {
+      amount: amount,
+      movie_id: movie_id,
+      user_id: user_id,
+    };
     const purchase = await Purchase.findByPk(purchase_id);
     if (purchase) {
       await purchase.update({
         amount,
         movie_id,
         user_id,
+        status,
       });
-      res.send(purchase);
-    } else return res.send("No matches found");
-  } catch (error) {}
+      res.status(200).send({
+        message: "Purchase updated with the following information",
+        purchaseInfo: purchaseInfo,
+      });
+    } else return res.status(400).send("No matches found");
+  } catch (error) {
+    return res.status(500).send({ message: err });
+  }
 });
 //! Borrado soft purchase
 router.delete("/delete/:purchase_id", async (req, res, next) => {
