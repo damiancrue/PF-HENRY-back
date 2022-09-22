@@ -116,7 +116,7 @@ users.post(
         user_id: uid,
         name: username,
         email: email,
-        role_id: "A",
+        role_id: role,
         active: true,
       });
       return res.status(201).send({ message: "User created" });
@@ -143,18 +143,27 @@ users.post("/isAdmin", getUID, async (req, res) => {
   }
 });
 
-users.post('/createUserByAdmin', async (req, res) => {
+users.post("/createUserByAdmin", async (req, res) => {
   const { username, email, password, role } = req.body;
-  if (!username || !email || !password || password === '' || email === '' || username === '')
+  if (
+    !username ||
+    !email ||
+    !password ||
+    password === "" ||
+    email === "" ||
+    username === ""
+  )
     return res.status(400).send({
       message: "All creation fields must be sent, and they can't be empty",
     });
   try {
-    await firebase.auth().createUser({
-      email: email,
-      password: password,
-      username: username
-    })
+    await firebase
+      .auth()
+      .createUser({
+        email: email,
+        password: password,
+        username: username,
+      })
       .then(async (userRecord) => {
         const uid = userRecord.uid;
         const userByAdmin = await User.create({
@@ -163,70 +172,74 @@ users.post('/createUserByAdmin', async (req, res) => {
           email: email,
           role_id: role,
           password,
-        })
-        return res.send(userByAdmin)
+        });
+        return res.send(userByAdmin);
       })
       .catch((error) => {
-        console.log('Error creating new user:', error);
+        console.log("Error creating new user:", error);
       });
   } catch (error) {
-    console.log("Error creating new user", error)
-    res.send({ message: error.message })
+    console.log("Error creating new user", error);
+    res.send({ message: error.message });
   }
 });
 
-users.delete('/deleteUser', async (req, res, next) => {
+users.delete("/deleteUser", async (req, res, next) => {
   const { email } = req.body;
-  if (!email) return res.send("Email must be sent")
+  if (!email) return res.send("Email must be sent");
   try {
     const user = await User.findOne({
-      where: { email }
+      where: { email },
     });
     if (user) {
       const uid = user.user_id;
-      firebase.auth().deleteUser(uid).then(async () => {
-        const deletedUser = await User.destroy({
-          where: { email }
+      firebase
+        .auth()
+        .deleteUser(uid)
+        .then(async () => {
+          const deletedUser = await User.destroy({
+            where: { email },
+          });
+          return res.send(deletedUser);
         });
-        return res.send(deletedUser)
-      });
     } else {
-      return res.status(404).send("User not found")
+      return res.status(404).send("User not found");
     }
   } catch (error) {
-    res.send({ message: error.message })
+    res.send({ message: error.message });
   }
 });
 
-users.post('/passwordReset', async (req, res, next) => {
+users.post("/passwordReset", async (req, res, next) => {
   const { email } = req.body;
   if (!email) return res.send("Email must be sent");
   try {
     const linkReset = await firebase.auth().generatePasswordResetLink(email);
-    console.log(linkReset)
-    res.send(linkReset)
+    console.log(linkReset);
+    res.send(linkReset);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
-users.put('/passwordChange', async (req, res, next) => {
+users.put("/passwordChange", async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) return res.send("All data must be sent");
   try {
     const user = await User.findOne({
-      where: { email }
+      where: { email },
     });
     if (user) {
       const uid = user.user_id;
       const newPassword = await firebase.auth().updateUser(uid, {
-        password: password
+        password: password,
       });
-      return res.send(newPassword)
-    } return res.status(404).send("User not found")
+      return res.send(newPassword);
+    }
+    return res.status(404).send("User not found");
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 module.exports = users;

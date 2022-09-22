@@ -61,7 +61,7 @@ router.put("/update/:id", async (req, res, next) => {
     const room = await putRooms(id, req.body);
     if (room) return res.send(room);
     else return res.send("No matches were found");
-  } catch (error) {
+  } catch (e) {
     next(e);
   }
 });
