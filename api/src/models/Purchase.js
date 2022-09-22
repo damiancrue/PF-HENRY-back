@@ -38,5 +38,8 @@ module.exports = (sequelize) => {
     status: {
       type: DataTypes.STRING(20),
     },
+    mp_id: {
+      type: DataTypes.STRING, //hacer integer
+    },
   });
 };

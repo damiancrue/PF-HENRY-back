@@ -8,6 +8,7 @@ const {
   Schedule,
   Product,
 } = require("../db.js");
+const formatData = require("../controllers/revertPurchaseFormatter.js");
 const { Op } = require("sequelize");
 require("dotenv").config();
 const { ACCESS_TOKEN } = process.env;
@@ -153,9 +154,7 @@ payment.post("/", getUID, async (req, res, next) => {
     mercadopago.preferences
       .create(mpPreference)
       .then((response) => {
-        console.log("respondio");
         global.id = response.body.id;
-        console.log(response.body);
         return res
           .status(200)
           .send({ id: global.id, purchase_id: newPurchase.purchase_id });
@@ -169,17 +168,12 @@ payment.post("/", getUID, async (req, res, next) => {
   }
 });
 
-//Revierte la compra generada por un usuario cuando el da a "Pagar", pero luego se arrepiente y vuelve a editar su carrito
+//Revierte la compra generada por un usuario cuando el da a "Pagar" pero luego se arrepiente y vuelve a editar su carrito
 //Es decir: revierte el stock, los asientos ocupados, y setea un nuevo status de compra
 payment.put("/revertPurchase", async (req, res) => {
-  const { purchase_id, purchaseData } = req.body;
-  console.log(req.body);
-  console.log(purchase_id);
+  const { purchase_id } = req.body;
   try {
-    const relatedData = await Purchase.findAll({
-      where: {
-        purchase_id: purchase_id,
-      },
+    const relatedData = await Purchase.findByPk(purchase_id, {
       attributes: ["purchase_id"],
       include: [
         {
@@ -204,91 +198,88 @@ payment.put("/revertPurchase", async (req, res) => {
         },
       ],
     });
+
+    //Formatea los datos para usarlos mas facil
+    const { productDetails, scheduleDetail } = await formatData(relatedData);
+
     //revierte el stock de cada item comprado
-    let newStocks = [];
-    relatedData.ProductDetails.forEach(async (boughtProduct) => {
-      const currentStock = await Product.findByPk(
-        boughtProduct.Product.product_id,
-        {
-          attributes: ["stock"],
-        }
-      );
-      const setNewStock = await Product.update(
-        { stock: currentStock + boughtProduct.product_quantity },
+    await productDetails.forEach(async (boughtProduct) => {
+      await Product.update(
+        { stock: boughtProduct.newStock },
         {
           where: {
-            product_id: boughtProduct.Product.product_id,
+            product_id: boughtProduct.product_id,
           },
         }
       );
-      newStocks.push(setNewStock);
     });
 
-    //Setea los nuevos asientos comprados, quitando los que compro el user cancelando la compra
-    let newBoughtSeats =
-      relatedData.ScheduleDetails.Schedule.boughtSeats.filter(
-        (seat) =>
-          !relatedData.ScheduleDetails.Schedule.seat_numbers.includes(seat)
-      );
     //Updatea los asientos ocupados del Schedule
-    const freeSeats = await Schedule.update(
-      { boughtSeats: newBoughtSeats },
+    await Schedule.update(
+      { boughtSeats: scheduleDetail.newFreeSeats },
       {
         where: {
-          schedule_id: relatedData.ScheduleDetail.Schedule.schedule_id,
+          schedule_id: scheduleDetail.schedule_id,
         },
       }
     );
-    const cancelPurchase = await Purchase.update(
-      { status: "Canceled automatically by user" },
+
+    //Cambia el status de la compra
+    await Purchase.update(
+      { status: "Auto-Cancelled Cart" },
       {
         where: {
           purchase_id: purchase_id,
         },
       }
     );
-    const response = {
-      newStocks: newStocks,
-      freeSeats: freeSeats,
-      cancelPurchase: cancelPurchase,
-    };
-    return res.status(200).send(response);
-    // const deleted = await Purchase.destroy({
-    //   where: {
-    //     purchase_id: purchase_id,
-    //   },
-    // });
+
+    return res
+      .status(200)
+      .send({ message: `Purchase ${purchase_id} reverted` });
   } catch (err) {
     return res.status(500).send({ message: err });
   }
 });
 
+//PENDIENTE:::AGREGAR LA MODIFIACION DEL STATUS DE LA COMPRA CUANOD HAGA MIERDA LA DB Y PUEDA CAMBIAR
+//EL CAMPO MP_ID A INTEGER
 payment.get("/followUp", async (req, res) => {
-  console.info("EN LA RUTA DE PAGOS ", req);
+  //approved = APRO
+  //in_process = CONT (pendiente de pago)
+  //
+  console.info("EN LA RUTA DE PAGOS ");
   const payment_id = req.query.payment_id;
+  console.log(payment_id);
   const payment_status = req.query.status;
   const external_reference = req.query.external_reference;
+  console.log(external_reference);
   const merchant_order_id = req.query.merchant_order_id;
-  console.log(payment_status);
-  console.log("EXTERNAL REFERENCE ", external_reference);
-  const editPurchase = await Purchase.update(
-    { status: "completed" },
-    {
-      where: {
-        purchase_id: {
-          [Op.eq]: external_reference,
-        },
-      },
-    }
-  );
-  return res.redirect("https://estudioda.ar/cinema/cinema");
+  console.log(merchant_order_id);
+  let status = payment_status === "approved" ? "Approved" : "Pay In Process";
+  // await Purchase.update(
+  //   { status: status, mp_id: payment_id },
+  //   {
+  //     where: {
+  //       purchase_id: external_reference,
+  //     },
+  //   }
+  // );
+  switch (status) {
+    case "Approved":
+      return res.redirect("https://estudioda.ar/cinema/payment/success");
+    case "Pay In Process":
+      return res.redirect("https://estudioda.ar/cinema/payment/pending");
+    default:
+      return res.redirect("https://estudioda.ar/cinema/payment/fail");
+  }
 });
 
 payment.get("/pagos/:id", (req, res) => {
   const mp = new mercadopago(ACCESS_TOKEN);
   const id = req.params.id;
   console.info("Buscando el id", id);
-  mp.get(`/v1/payments/search`, { status: "success" })
+  mp.get(`/v1/payments/search`, { id: id })
     .then((resultado) => {
       console.info("resultado", resultado);
       res.status(200).send({ resultado: resultado });
