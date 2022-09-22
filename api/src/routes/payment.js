@@ -19,6 +19,8 @@ mercadopago.configure({
   access_token: ACCESS_TOKEN,
 });
 
+//Crea la compra, modifica el stock, modifica los asientos ocupados de la funcion, crea el detalle los productos comprodos,
+//crea el detalle de la funcion de las entradas compradas
 payment.post("/", getUID, async (req, res, next) => {
   const { productsBuy, scheduleId } = req.body;
   const uid = req.uid;
@@ -81,11 +83,16 @@ payment.post("/", getUID, async (req, res, next) => {
       });
     });
 
+    //Recupera el precio de la entrada de la funcion
+    const ticketPrice = await Schedule.findByPk(scheduleId.schedule_id, {
+      attributes: ["price"],
+    });
+
     //Crea el detalle de compra de funcion
     let newScheduleDetail = await ScheduleDetail.create({
       schedule_quantity: scheduleId.selected.length,
       seat_numbers: scheduleId.selected,
-      price: 10,
+      price: ticketPrice * scheduleId.selected.length,
       purchase_id: newPurchase.purchase_id,
       schedule_id: scheduleId.schedule_id,
     });
@@ -149,7 +156,9 @@ payment.post("/", getUID, async (req, res, next) => {
         console.log("respondio");
         global.id = response.body.id;
         console.log(response.body);
-        return res.status(200).send({ id: global.id });
+        return res
+          .status(200)
+          .send({ id: global.id, purchase_id: newPurchase.purchase_id });
       })
       .catch((err) => {
         console.log(err);
@@ -159,7 +168,101 @@ payment.post("/", getUID, async (req, res, next) => {
     return res.status(500).send({ message: err });
   }
 });
-//comment
+
+//Revierte la compra generada por un usuario cuando el da a "Pagar", pero luego se arrepiente y vuelve a editar su carrito
+//Es decir: revierte el stock, los asientos ocupados, y setea un nuevo status de compra
+payment.put("/revertPurchase", async (req, res) => {
+  const { purchase_id, purchaseData } = req.body;
+  console.log(req.body);
+  console.log(purchase_id);
+  try {
+    const relatedData = await Purchase.findAll({
+      where: {
+        purchase_id: purchase_id,
+      },
+      attributes: ["purchase_id"],
+      include: [
+        {
+          model: ProductDetail,
+          attributes: ["product_detail_id", "product_quantity"],
+          include: [
+            {
+              model: Product,
+              attributes: ["product_id"],
+            },
+          ],
+        },
+        {
+          model: ScheduleDetail,
+          attributes: ["detail_id", "seat_numbers"],
+          include: [
+            {
+              model: Schedule,
+              attributes: ["schedule_id", "boughtSeats"],
+            },
+          ],
+        },
+      ],
+    });
+    //revierte el stock de cada item comprado
+    let newStocks = [];
+    relatedData.ProductDetails.forEach(async (boughtProduct) => {
+      const currentStock = await Product.findByPk(
+        boughtProduct.Product.product_id,
+        {
+          attributes: ["stock"],
+        }
+      );
+      const setNewStock = await Product.update(
+        { stock: currentStock + boughtProduct.product_quantity },
+        {
+          where: {
+            product_id: boughtProduct.Product.product_id,
+          },
+        }
+      );
+      newStocks.push(setNewStock);
+    });
+
+    //Setea los nuevos asientos comprados, quitando los que compro el user cancelando la compra
+    let newBoughtSeats =
+      relatedData.ScheduleDetails.Schedule.boughtSeats.filter(
+        (seat) =>
+          !relatedData.ScheduleDetails.Schedule.seat_numbers.includes(seat)
+      );
+    //Updatea los asientos ocupados del Schedule
+    const freeSeats = await Schedule.update(
+      { boughtSeats: newBoughtSeats },
+      {
+        where: {
+          schedule_id: relatedData.ScheduleDetail.Schedule.schedule_id,
+        },
+      }
+    );
+    const cancelPurchase = await Purchase.update(
+      { status: "Canceled automatically by user" },
+      {
+        where: {
+          purchase_id: purchase_id,
+        },
+      }
+    );
+    const response = {
+      newStocks: newStocks,
+      freeSeats: freeSeats,
+      cancelPurchase: cancelPurchase,
+    };
+    return res.status(200).send(response);
+    // const deleted = await Purchase.destroy({
+    //   where: {
+    //     purchase_id: purchase_id,
+    //   },
+    // });
+  } catch (err) {
+    return res.status(500).send({ message: err });
+  }
+});
+
 payment.get("/followUp", async (req, res) => {
   console.info("EN LA RUTA DE PAGOS ", req);
   const payment_id = req.query.payment_id;

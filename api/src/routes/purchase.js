@@ -85,6 +85,10 @@ router.get("/history", async (req, res) => {
         const userPurchases = await Purchase.findAll({
           include: [
             {
+              model: User,
+              attributes: ["email"],
+            },
+            {
               model: ProductDetail,
               attributes: ["product_quantity", "price", "product_id"],
               include: [
@@ -137,6 +141,10 @@ router.get("/history", async (req, res) => {
               ],
             },
             {
+              model: User,
+              attributes: ["email"],
+            },
+            {
               model: ScheduleDetail,
               attributes: ["schedule_quantity", "seat_numbers", "price"],
               include: [
@@ -164,6 +172,7 @@ router.get("/history", async (req, res) => {
       // console.log(userRole);
       // const userID = user[0]?.user_id;
     }
+    return res.status(400).send({ message: "An email must be sent" });
   } catch (err) {
     return res.status(500).send(err);
   }
