@@ -187,15 +187,23 @@ router.put("/update/:purchase_id", async (req, res, next) => {
       amount: amount,
       movie_id: movie_id,
       user_id: user_id,
+      status: status,
     };
     const purchase = await Purchase.findByPk(purchase_id);
     if (purchase) {
-      await purchase.update({
-        amount,
-        movie_id,
-        user_id,
-        status,
-      });
+      await Purchase.update(
+        {
+          amount: amount,
+          movie_id: movie_id,
+          user_id: user_id,
+          status: status,
+        },
+        {
+          where: {
+            purchase_id: purchase_id,
+          },
+        }
+      );
       res.status(200).send({
         message: "Purchase updated with the following information",
         purchaseInfo: purchaseInfo,
