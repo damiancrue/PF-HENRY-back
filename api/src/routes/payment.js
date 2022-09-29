@@ -7,7 +7,9 @@ const {
   ScheduleDetail,
   Schedule,
   Product,
+  User,
 } = require("../db.js");
+const axios = require("axios");
 const formatData = require("../controllers/revertPurchaseFormatter.js");
 const { Op } = require("sequelize");
 require("dotenv").config();
@@ -40,6 +42,40 @@ payment.post("/", getUID, async (req, res, next) => {
       quantity: scheduleId.selected.length,
       currency_id: "USD",
     });
+
+    let promiseArr = [];
+
+    //Recupera los asientos ocupados
+    const scheduleData = await Schedule.findByPk(scheduleId.schedule_id, {
+      attributes: ["boughtSeats"],
+    });
+
+    //Extrae la data de asientos ocupados, agrega los asientos seleccionados al usuario, y modifica el schedule
+    const scheduleBoughtSeats =
+      scheduleData !== null ? [...scheduleData.dataValues.boughtSeats] : [];
+
+    const seatWasTaken = scheduleBoughtSeats.filter((seat) =>
+      scheduleId.selected.includes(seat)
+    );
+
+    if (seatWasTaken.length > 0) {
+      return res
+        .status(400)
+        .send({ message: "One of the selected seats is already taken" });
+    }
+
+    scheduleId.selected.forEach((seat) => scheduleBoughtSeats.push(seat));
+
+    const scheduleUpdated = Schedule.update(
+      { boughtSeats: scheduleBoughtSeats },
+      {
+        where: {
+          schedule_id: scheduleId.schedule_id,
+        },
+      }
+    );
+    promiseArr.push(scheduleUpdated);
+
     //Consigue el total de la compra
     const productsTotalAmount = productsBuy.map(
       (product) => product.quantity * product.price
@@ -56,47 +92,31 @@ payment.post("/", getUID, async (req, res, next) => {
       user_id: uid,
     });
 
-    //Recupera los asientos ocupados
-    const scheduleData = await Schedule.findByPk(scheduleId.schedule_id, {
-      attributes: ["boughtSeats"],
-    });
-
-    //Extrae la data de asientos ocupados, agrega los asientos seleccionados al usuario, y modifica el schedule
-    const scheduleBoughtSeats = [...scheduleData.dataValues.boughtSeats];
-    scheduleId.selected.forEach((seat) => scheduleBoughtSeats.push(seat));
-    const scheduleSeatsMod = await Schedule.update(
-      { boughtSeats: scheduleBoughtSeats },
-      {
-        where: {
-          schedule_id: scheduleId.schedule_id,
-        },
-      }
-    );
-
-    //Crea los detalles de compra de los productos
-    let newProductDetails = [];
-    productsBuy.forEach(async (product) => {
-      const insertProductDetail = await ProductDetail.create({
-        product_quantity: product.quantity,
-        price: product.price,
+    //Nuevo (a probar)
+    for (var i = 0; i < productsBuy.length; i++) {
+      const insertProductDetail = ProductDetail.create({
+        product_quantity: productsBuy[i].quantity,
+        price: productsBuy[i].price,
         purchase_id: newPurchase.purchase_id,
-        product_id: product.id,
+        product_id: productsBuy[i].id,
       });
-    });
+      promiseArr.push(insertProductDetail);
+    }
 
     //Recupera el precio de la entrada de la funcion
     const ticketPrice = await Schedule.findByPk(scheduleId.schedule_id, {
       attributes: ["price"],
     });
 
-    //Crea el detalle de compra de funcion
-    let newScheduleDetail = await ScheduleDetail.create({
+    //Nuevo (a probar)
+    const newScheduleDetail = ScheduleDetail.create({
       schedule_quantity: scheduleId.selected.length,
       seat_numbers: scheduleId.selected,
-      price: ticketPrice * scheduleId.selected.length,
+      price: ticketPrice.dataValues.price * scheduleId.selected.length,
       purchase_id: newPurchase.purchase_id,
       schedule_id: scheduleId.schedule_id,
     });
+    promiseArr.push(newScheduleDetail);
 
     //Actualiza stock
     const extractedIDs = productsBuy.map((product) => product.id);
@@ -118,20 +138,24 @@ payment.post("/", getUID, async (req, res, next) => {
         user_selected_product: relatedProduct[0].quantity,
       };
     });
-    extractedStocks.forEach(async (product) => {
-      await Product.update(
+
+    //Nuevo (a probar)
+    for (var i = 0; i < extractedStocks.length; i++) {
+      const stockUpdated = Product.update(
         {
-          stock: product.stock - product.user_selected_product,
+          stock:
+            extractedStocks[i].stock - extractedStocks[i].user_selected_product,
         },
         {
           where: {
             product_id: {
-              [Op.eq]: product.id,
+              [Op.eq]: extractedStocks[i].id,
             },
           },
         }
       );
-    });
+      promiseArr.push(stockUpdated);
+    }
 
     //Realiza la configuracion de todo lo de mercadopago
     let mpPreference = {
@@ -160,8 +184,7 @@ payment.post("/", getUID, async (req, res, next) => {
           .send({ id: global.id, purchase_id: newPurchase.purchase_id });
       })
       .catch((err) => {
-        console.log(err);
-        return res.status(400).send(err);
+        return res.status(404).send(err);
       });
   } catch (err) {
     return res.status(500).send({ message: err });
@@ -202,9 +225,11 @@ payment.put("/revertPurchase", async (req, res) => {
     //Formatea los datos para usarlos mas facil
     const { productDetails, scheduleDetail } = await formatData(relatedData);
 
+    const promiseArr = [];
+
     //revierte el stock de cada item comprado
-    await productDetails.forEach(async (boughtProduct) => {
-      await Product.update(
+    productDetails.forEach((boughtProduct) => {
+      const productStockUpdate = Product.update(
         { stock: boughtProduct.newStock },
         {
           where: {
@@ -212,10 +237,11 @@ payment.put("/revertPurchase", async (req, res) => {
           },
         }
       );
+      promiseArr.push(productStockUpdate);
     });
 
     //Updatea los asientos ocupados del Schedule
-    await Schedule.update(
+    const scheduleUpdate = Schedule.update(
       { boughtSeats: scheduleDetail.newFreeSeats },
       {
         where: {
@@ -224,8 +250,9 @@ payment.put("/revertPurchase", async (req, res) => {
       }
     );
 
+    promiseArr.push(scheduleUpdate);
     //Cambia el status de la compra
-    await Purchase.update(
+    const purchaseUpdate = Purchase.update(
       { status: "Auto-Cancelled Cart" },
       {
         where: {
@@ -234,6 +261,9 @@ payment.put("/revertPurchase", async (req, res) => {
       }
     );
 
+    promiseArr.push(purchaseUpdate);
+
+    Promise.all(promiseArr);
     return res
       .status(200)
       .send({ message: `Purchase ${purchase_id} reverted` });
@@ -257,14 +287,30 @@ payment.get("/followUp", async (req, res) => {
   const merchant_order_id = req.query.merchant_order_id;
   console.log(merchant_order_id);
   let status = payment_status === "approved" ? "Approved" : "Pay In Process";
-  // await Purchase.update(
-  //   { status: status, mp_id: payment_id },
-  //   {
-  //     where: {
-  //       purchase_id: external_reference,
-  //     },
-  //   }
-  // );
+  let user = await Purchase.findByPk(external_reference, {
+    attributes: ["user_id"],
+  });
+  let userData = await User.findByPk(user.dataValues.user_id, {
+    where: {
+      attributes: ["email", "name"],
+    },
+  });
+
+  await axios.post("http://localhost:3001/purchase/response", {
+    email: userData.dataValues.email,
+    name: userData.dataValues.name,
+    purchase_id: external_reference,
+  });
+
+  await Purchase.update(
+    { status: status, mp_id: payment_id },
+    {
+      where: {
+        purchase_id: external_reference,
+      },
+    }
+  );
+
   switch (status) {
     case "Approved":
       return res.redirect("https://estudioda.ar/cinema/payment/success");
@@ -289,37 +335,5 @@ payment.get("/pagos/:id", (req, res) => {
       res.status(400).send({ error: err });
     });
 });
-
-// payment.post("/processPayment", async (req, res) => {
-//   const { amount, products, functions } = req.body;
-//   //console.log(req);
-//   //if (!amount || !products || !functions)
-//   //return res.status(400).send({ message: "All data must be sent" });
-//   try {
-//     const newPayment = await stripe.paymentIntents.create({
-//       amount,
-//       currency: "ARS",
-//       description: "Test purchase",
-//       payment_method: "card",
-//       confirm: true,
-//     });
-//     return res.status(200).send(newPayment);
-//   } catch (err) {
-//     return res.status(500).send({ message: err.message });
-//   }
-// });
-
-// payment.post("/test", async (req, res) => {
-//   try {
-//     const pago = await Stripe.paymentIntents.create({
-//       amount: 1099,
-//       currency: "USD",
-//       automatic_payment_methods: { enabled: true },
-//     });
-//     return res.status(200).send({ client_secret: pago.client_secret });
-//   } catch (err) {
-//     return res.status(500).send(err);
-//   }
-// });
 
 module.exports = payment;

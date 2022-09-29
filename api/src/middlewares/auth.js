@@ -44,7 +44,7 @@ const checkValidUser = async (req, res, next) => {
 
 const getUID = async (req, res, next) => {
   const token = req.body.token;
-  console.log(token);
+
   try {
     const decodedValue = await firebase.auth().verifyIdToken(token);
     if (decodedValue) {
@@ -57,7 +57,6 @@ const getUID = async (req, res, next) => {
         .send({ message: "Invalid user or session no longer active" });
     }
   } catch (err) {
-    console.log(err.message);
     return res.status(404).send({ message: err });
   }
 };

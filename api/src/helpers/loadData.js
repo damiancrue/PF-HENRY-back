@@ -1,61 +1,61 @@
-const { User, Room, Product, Movie } = require("../db.js");
+const { User, Room, Product, Movie, Schedule } = require("../db.js");
 const { sala200 } = require("../data/seats.js");
 const { getMovies } = require("../controllers/getMovies.js");
 const firebase = require("../firebase-config.js");
 
 //firebase.auth().deleteUser();
 const loadData = async () => {
-  // await User.bulkCreate([
-  //   {
-  //     user_id: "XYlzBbLtYyXe22YeKmI6bGa70AB2",
-  //     name: "Alan",
-  //     email: "alan@alan.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "U95CjeGaxaNiHToT7CjGeCkfWg72",
-  //     name: "Nico",
-  //     email: "nico@nico.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "F1hzz5dKfOX3XXABJ3DZHNAooii1",
-  //     name: "Dami",
-  //     email: "dami@dami.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "TjxZZgCuI7TopnsH5AgYmhTQXWz2",
-  //     name: "Luis",
-  //     email: "luis@luis.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "32KaZH6OZeYbWGl9sukzV9RjiY72",
-  //     name: "Samu",
-  //     email: "samu@samu.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "f7NG3jcYZ5QWtJcfL1pbhY7U2Cd2",
-  //     name: "Ernesto",
-  //     email: "ernest@ernest.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  //   {
-  //     user_id: "l1yjsoEZrNhjxOHW8Hh7Jp1NMu83",
-  //     name: "Machu",
-  //     email: "machu@machu.com",
-  //     role_id: "A",
-  //     active: true,
-  //   },
-  // ]);
+  await User.bulkCreate([
+    {
+      user_id: "J14SirQM9vMLxoMWjlh1OhDpcsC3",
+      name: "Machu",
+      email: "machu@machu.com",
+      role_id: "A",
+      active: true,
+    },
+    //   {
+    //     user_id: "U95CjeGaxaNiHToT7CjGeCkfWg72",
+    //     name: "Nico",
+    //     email: "nico@nico.com",
+    //     role_id: "A",
+    //     active: true,
+    //   },
+    //   {
+    //     user_id: "F1hzz5dKfOX3XXABJ3DZHNAooii1",
+    //     name: "Dami",
+    //     email: "dami@dami.com",
+    //     role_id: "A",
+    //     active: true,
+    //   },
+    //   {
+    //     user_id: "TjxZZgCuI7TopnsH5AgYmhTQXWz2",
+    //     name: "Luis",
+    //     email: "luis@luis.com",
+    //     role_id: "A",
+    //     active: true,
+    //   },
+    //   {
+    //     user_id: "32KaZH6OZeYbWGl9sukzV9RjiY72",
+    //     name: "Samu",
+    //     email: "samu@samu.com",
+    //     role_id: "A",
+    //     active: true,
+    //   },
+    //   {
+    //     user_id: "f7NG3jcYZ5QWtJcfL1pbhY7U2Cd2",
+    //     name: "Ernesto",
+    //     email: "ernest@ernest.com",
+    //     role_id: "A",
+    //     active: true,
+    //   },
+    //   {
+    //     user_id: "l1yjsoEZrNhjxOHW8Hh7Jp1NMu83",
+    //     name: "Machu",
+    //     email: "machu@machu.com",
+    //     role_id: "A",
+    //     active: true,
+    //  },
+  ]);
   await Room.bulkCreate([
     { name: "Sala 1", room_seats: sala200, display_type: "2D" },
     { name: "Sala 2", room_seats: sala200, display_type: "3D" },
@@ -226,6 +226,34 @@ const loadData = async () => {
       active: true,
     },
   ]);
+  setTimeout(async () => {
+    await Schedule.bulkCreate([
+      {
+        day: "2022-09-25",
+        time: "13:00:00",
+        bougtSeats: [],
+        active: true,
+        movie_id: 1,
+        room_id: 1,
+      },
+      {
+        day: "2022-09-26",
+        time: "13:00:00",
+        bougtSeats: [],
+        active: true,
+        movie_id: 1,
+        room_id: 1,
+      },
+      {
+        day: "2022-09-27",
+        time: "13:00:00",
+        bougtSeats: [],
+        active: true,
+        movie_id: 1,
+        room_id: 1,
+      },
+    ]);
+  }, 3000);
 };
 
 module.exports = loadData;
